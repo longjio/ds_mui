@@ -1,0 +1,18 @@
+2025.06.10
+라우터 문제인지 일주일을 헤매고 GPT와 씨름해도 프로젝트 화면이 렌더링되지 않아서 결국 작업 중단.
+MUI 프로젝트 처음부터 다시 시작해보자!
+1. Node.js 버전이 혹시 문제될지 몰라 작업 전 업데이트 하기
+(잠재적 호환성 문제)
+기존 Node.js 삭제
+nvm-setup.exe 파일 다운로드 및 설치
+
+
+2025.06.11
+1. npm install
+2. npm start
+3. npm install react-router-dom
+4. 각 폴더 생성 (components, layouts, pages)
+5. mui스타일은 Emotion 라이브러리를 사용하므로 패키지 설치
+npm install @mui/material @emotion/react @emotion/styled
+6. 폰트 설치
+npm install pretendard
