@@ -8,6 +8,8 @@ import MainLayout from './layouts/MainLayout';
 // Pages
 import TypographyPage from './pages/TypographyPage';
 import ButtonPage from './pages/ButtonPage';
+import ButtonGroupPage from './pages/ButtonGroupPage';
+import CheckboxPage from './pages/CheckboxPage';
 
 export const routesConfig: RouteObject[] = [
     {
@@ -16,7 +18,9 @@ export const routesConfig: RouteObject[] = [
         children: [
             // Foundations
             { path: 'button', element: <ButtonPage /> },
+            { path: 'button-group', element: <ButtonGroupPage /> },
             { path: 'typography', element: <TypographyPage /> },
+            { path: 'checkbox', element: <CheckboxPage /> },
             // { path: '*', element: <NotFoundPage /> } // 404 페이지
         ],
     },

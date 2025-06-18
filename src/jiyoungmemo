@@ -16,3 +16,28 @@ nvm-setup.exe 파일 다운로드 및 설치
 npm install @mui/material @emotion/react @emotion/styled
 6. 폰트 설치
 npm install pretendard
+7. MUI X DataGrid
+   npm install @mui/x-data-grid
+
+
+
+2025.06.17
+버튼의 그림자 효과 제거할 때 disableElevation 넣기
+<DsButtonGroup
+    {...commonGroupProps}
+    variant="contained"
+    disableElevation // true로 설정된 것과 동일
+    aria-label="Contained button group with elevation disabled"
+>
+
+
+
+
+IntelliJ의 강력한 캐시 초기화 기능 사용:
+•IntelliJ는 단순 재시작보다 더 강력한 캐시 무효화 및 재시작 기능이 있습니다.
+이게 때로는 꼬인 인덱스나 캐시 문제를 해결해 줄 수 있어요.
+•방법: IntelliJ 메뉴에서 File > Invalidate Caches / Restart...를 선택하세요.
+•나타나는 대화상자에서 Invalidate and Restart 버튼을 클릭합니다.
+(옵션 중 Clear file system cache and Local History 등도 선택해볼 수 있지만,
+일단 기본 Invalidate and Restart부터 시도해 보세요.)•이 작업은 시간이 조금 걸릴 수 있습니다.
+IntelliJ가 프로젝트 인덱싱을 처음부터 다시 진행합니다.

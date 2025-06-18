@@ -25,15 +25,15 @@ interface MenuGroup {
 // 메뉴 구조 정의 (경로 및 그룹핑 수정)
 const menuGroups: MenuGroup[] = [
     {
-        title: 'General Components',
+        title: 'Components',
         items: [
-            { text: 'Button', path: '/components/button' },
-            { text: 'ButtonGroup', path: '/components/button-group' },
+            { text: 'Button', path: '/button' },
+            { text: 'ButtonGroup', path: '/button-group' },
             { text: 'DataGrid', path: '/components/data-grid' },
         ],
     },
     {
-        title: 'Input Controls',
+        title: 'Input',
         items: [
             { text: 'Autocomplete', path: '/inputs/autocomplete' },
             {
