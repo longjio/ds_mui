@@ -1,31 +1,29 @@
 import * as React from 'react';
-import TextField, {TextFieldProps} from '@mui/material/TextField'; // TextField 임포트
-// TextField에 필요한 props를 정의합니다.
-// MUI의 TextFieldProps를 확장하여 필요한 props를 추가하거나 Omit으로 제외할 수 있습니다.
-export interface DsTextFieldProps extends Omit<TextFieldProps, 'variant'> {
-    // label, value, onChange 등은 TextFieldProps에 이미 포함되어 있습니다.
-    // DsTextField만의 고유한 variant를 사용하거나,
-    // 외부에서 variant를 받지 않도록 Omit 할 수 있습니다.
-    // 필요에 따라 추가적인 props를 정의할 수 있습니다.
-}
+import TextField, { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
+
+// TextFieldProps를 직접 확장하여 variant를 포함한 모든 MUI TextField props를 받을 수 있도록 합니다.
+export type DsTextFieldProps = MuiTextFieldProps & {
+    // DsTextField만의 고유한 props가 있다면 여기에 추가할 수 있습니다.
+    // 예를 들어, DsTextField에서만 사용되는 새로운 prop을 정의할 수 있습니다.
+    // customBehavior?: boolean;
+};
 
 export function DsTextField({
-                                label,
-                                value,
-                                onChange,
-                                id = 'ds-text-field', // 기본 id 변경
-                                name = 'text-field',  // 기본 name 변경
-                                ...rest // 나머지 TextFieldProps를 받습니다.
+                                id: idFromProps, // props에서 오는 id
+                                name: nameFromProps,
+                                variant: variantFromProps,
+                                ...rest // 나머지 props
                             }: DsTextFieldProps) {
+    const id = idFromProps ?? 'ds-text-field';
+    const name = nameFromProps ?? 'ds-text-field-name';
+    const variant = variantFromProps ?? 'outlined';
+
     return (
         <TextField
             id={id}
             name={name}
-            label={label}
-            value={value}
-            onChange={onChange}
-            variant="outlined" // 기본 variant 설정 (예: outlined, filled, standard)
-            {...rest} // 나머지 props 전달 (예: disabled, error, helperText, fullWidth 등)
+            variant={variant}
+            {...rest}
         />
     );
 }

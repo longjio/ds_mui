@@ -3,7 +3,7 @@
 import * as React from 'react';
 import Box, { BoxProps } from '@mui/material/Box'; // Import BoxProps for sx
 // DataGrid 관련 타입 및 컴포넌트를 임포트합니다.
-import { DataGrid, GridColDef, GridRowsProp, DataGridProps as MuiDataGridProps } from '@mui/x-data-grid'; // Renamed to avoid conflict if needed
+import { DataGrid, DataGridProps as MuiDataGridProps } from '@mui/x-data-grid'; // Renamed to avoid conflict if needed
 
 // DsDataGridProps 인터페이스를 정의합니다.
 // MUI의 DataGridProps를 확장하여 DataGrid가 받는 모든 prop을 그대로 받을 수 있게 합니다.

@@ -3,19 +3,18 @@
 import React from 'react';
 import { Stack, Typography, Box } from '@mui/material';
 import { DsDataGrid } from '../components/mui_x/datagrid/DsDataGrid';
-// Import GridValueGetterParams if you need more specific typing for valueGetter params,
-// but often, typing GridColDef with the row type is sufficient.
-import { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+// 사용자 정의 타입을 가져옵니다. 이 타입들이 실제 MUI X DataGrid와 호환되는지 확인이 중요합니다.
+import type { GridValueGetterParams, GridColDef } from '../types/mui-grid';
 
-// 1. Define an interface for your row data
+// 1. 행 데이터에 대한 인터페이스 정의
 interface RowData {
     id: number;
-    firstName: string | null; // Allow null if firstName can be missing
+    firstName: string | null; // firstName이 없을 수 있는 경우 null 허용
     lastName: string;
-    age: number | null;      // Allow null if age can be missing
+    age: number | null;      // age가 없을 수 있는 경우 null 허용
 }
 
-// 2. Use the RowData interface with GridColDef
+// 2. RowData 인터페이스를 GridColDef와 함께 사용
 const columns: GridColDef<RowData>[] = [
     { field: 'id', headerName: 'ID', width: 90 },
     {
@@ -33,25 +32,34 @@ const columns: GridColDef<RowData>[] = [
     {
         field: 'age',
         headerName: '나이 (Age)',
-        type: 'number',
+        type: 'number', // 사용자 정의 GridColDef에 'number' 타입이 GridColType으로 정의되어 있는지 확인
         width: 110,
         editable: true,
-        align: 'left',
-        headerAlign: 'left',
+        align: 'left', // 사용자 정의 GridColDef에 'align' 속성이 정의되어 있는지 확인
+        headerAlign: 'left', // 사용자 정의 GridColDef에 'headerAlign' 속성이 정의되어 있는지 확인
     },
     {
         field: 'fullName',
         headerName: '전체 이름 (Full name)',
         description: '이 열은 valueGetter를 사용하며 정렬할 수 없습니다.',
-        sortable: false,
+        sortable: false, // 사용자 정의 GridColDef에 'sortable' 속성이 정의되어 있는지 확인
         width: 180,
-        // Now 'params.row' will be correctly typed as RowData
-        valueGetter: (params: GridValueGetterParams<RowData>) =>
-            `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        valueGetter: (params: GridValueGetterParams<RowData>) => {
+            // params 객체와 params.row가 유효한지 확인하여 런타임 에러 방지
+            if (!params || typeof params.row === 'undefined') {
+                console.warn('DataGridPage: "fullName" 컬럼의 valueGetter에서 params 또는 params.row가 undefined입니다.', params);
+                return '정보 없음'; // 또는 빈 문자열 '' 등 적절한 기본값
+            }
+            // firstName이 null일 경우 빈 문자열로 처리
+            const firstName = params.row.firstName || '';
+            // lastName은 null을 허용하지 않지만, 일관성을 위해 빈 문자열 처리 (필요시)
+            const lastName = params.row.lastName || '';
+            return `${firstName} ${lastName}`.trim(); // 앞뒤 공백 제거
+        },
     },
 ];
 
-// 3. Use the RowData interface for your rows array for consistency
+// 3. 행 데이터 배열에도 RowData 인터페이스를 사용하여 일관성 유지
 const rows: RowData[] = [
     { id: 1, lastName: '스노우', firstName: '존', age: 35 },
     { id: 2, lastName: '래니스터', firstName: '세르세이', age: 42 },
@@ -66,9 +74,8 @@ const rows: RowData[] = [
 
 const DataGridPage = () => {
     return (
-        <Stack spacing={4} sx={{ p: 3, maxWidth: '1000px', margin: 'auto' }}>
-            <Typography variant="h4" component="h1" gutterBottom>
-                DsDataGrid 컴포넌트 데모 페이지
+        <Stack spacing={4} sx={{ p: 3 }}>
+            <Typography variant="h4" component="h1" gutterBottom>DataGrid 컴포넌트
             </Typography>
 
             <Box>

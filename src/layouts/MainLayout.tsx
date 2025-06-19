@@ -25,45 +25,58 @@ interface MenuGroup {
 // 메뉴 구조 정의 (경로 및 그룹핑 수정)
 const menuGroups: MenuGroup[] = [
     {
-        title: 'Components',
+        title: 'Button',
         items: [
             { text: 'Button', path: '/button' },
             { text: 'ButtonGroup', path: '/button-group' },
-            { text: 'DataGrid', path: '/components/data-grid' },
         ],
     },
     {
-        title: 'Input',
+        title: 'Components',
         items: [
             { text: 'Autocomplete', path: '/inputs/autocomplete' },
             {
-                text: 'Combo Box', // Autocomplete 하위 기능으로 포함 또는 별도 그룹
+                text: 'Input', // Autocomplete 하위 기능으로 포함 또는 별도 그룹
                 path: '/inputs/autocomplete/combo', // 기본 Combo 페이지 경로
                 children: [
-                    { text: 'Async Combo', path: '/inputs/autocomplete/combo/async' },
-                    { text: 'Grouped Combo', path: '/inputs/autocomplete/combo/grouped' },
+                    { text: 'Textfield', path: '/textfield' },
+                    { text: 'Checkbox', path: '/checkbox' },
+                    { text: 'Radio Group', path: '/radio-group' },
+                    { text: 'Rating', path: '/rating' },
+                    { text: 'Slider', path: '/slider' },
+                    { text: 'Switch', path: '/switch' },
                 ],
             },
-            { text: 'Checkbox', path: '/inputs/checkbox' },
-            { text: 'Radio Group', path: '/inputs/radio' },
-            { text: 'Slider', path: '/inputs/slider' },
-            { text: 'Switch', path: '/inputs/switch' },
+
         ],
     },
     {
         title: 'Surface',
         items: [
-            { text: 'Accordion', path: '/surface/accordion' },
-            { text: 'Appbar', path: '/surface/appbar' }, // 이 Appbar는 레이아웃의 Appbar와 다른 컴포넌트 예시일 수 있음
-            { text: 'Card', path: '/surface/card' },
+            { text: 'Accordion', path: '/accordion' },
+            { text: 'Appbar', path: '/appbar' }, // 이 Appbar는 레이아웃의 Appbar와 다른 컴포넌트 예시일 수 있음
+            { text: 'Card', path: '/card' },
         ],
     },
     {
-        title: 'Foundations', // Typography 페이지를 위한 그룹
+        title: 'Layout',
+        items: [
+            { text: 'Grid', path: '/grid' },
+        ],
+    },
+    {
+        title: 'Foundations',
         items: [
             { text: 'Typography', path: '/typography' },
         ],
     },
+    {
+        title: 'MUI X',
+        items: [
+            { text: 'Data Grid', path: '/data-grid' },
+        ],
+    },
+
 ];
 
 // MainLayoutProps는 Outlet을 사용하므로 children prop이 필요 없어졌습니다.
