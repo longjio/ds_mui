@@ -16,9 +16,12 @@ function App() {
   return (
       <ThemeProvider theme={theme}>
         <CssBaseline /> {/* MUI의 기본 CSS 리셋 및 스타일 적용 */}
-        <Router>
-          <AppRoutes /> {/* 라우트 렌더링 */}
-        </Router>
+        {/*<Router>*/}
+        {/*  <AppRoutes /> /!* 라우트 렌더링 *!/*/}
+        {/*</Router>*/}
+          <Router basename={process.env.PUBLIC_URL}>
+              <AppRoutes /> {/* 라우트 렌더링 */}
+          </Router>
       </ThemeProvider>
   );
 }

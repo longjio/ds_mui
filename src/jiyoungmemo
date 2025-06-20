@@ -30,6 +30,12 @@ npm install pretendard
     aria-label="Contained button group with elevation disabled"
 >
 
+2025.06.20
+화면 배포
+npm run build
+npm install --save-dev gh-pages --legacy-peer-deps
+npm run deploy
+
 
 
 
