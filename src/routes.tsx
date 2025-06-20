@@ -22,6 +22,7 @@ import GridPage from './pages/GridPage';
 /// Surface
 import AccordionPage from './pages/AccordionPage';
 import AppBarPage from "./pages/AppBarPage";
+import CardPage from "./pages/CardPage";
 
 
 export const routesConfig: RouteObject[] = [
@@ -44,6 +45,7 @@ export const routesConfig: RouteObject[] = [
             // surface
             { path: 'accordion', element: <AccordionPage /> },
             { path: 'appbar', element: <AppBarPage /> },
+            { path: 'card', element: <CardPage /> },
             // layout
             { path: 'grid', element: <GridPage /> },
             //MUI X

@@ -1,7 +1,7 @@
 // src/pages/SelectPage.tsx
 
 import React, { useState } from 'react';
-import { Stack, Typography, Box, Paper, Divider } from '@mui/material';
+import { Stack, Typography, Box, Divider } from '@mui/material'; // Paper import 제거
 import { DsSelect, DsSelectItem } from '../components/input/DsSelect'; // DsSelect 컴포넌트의 실제 경로로 수정해주세요.
 import { SelectChangeEvent } from '@mui/material/Select';
 
@@ -50,12 +50,12 @@ const SelectPage = () => {
     ];
 
     return (
-        <Stack spacing={4} sx={{ p: 3, maxWidth: '700px', margin: 'auto' }}>
+        <Stack spacing={4} sx={{ p: 3}}>
             <Typography variant="h4" component="h1" gutterBottom>
-                DsSelect 컴포넌트 데모 페이지
+                Select 컴포넌트
             </Typography>
 
-            <Paper elevation={3} sx={{ p: 3 }}>
+            <Box sx={{ p: 3 }}> {/* Paper -> Box, elevation 제거 */}
                 <Typography variant="h6" component="h2" gutterBottom>
                     기본 DsSelect (제어 컴포넌트)
                 </Typography>
@@ -69,9 +69,9 @@ const SelectPage = () => {
                 <Typography variant="body2" sx={{ mt: 1 }}>
                     선택된 값: {age}
                 </Typography>
-            </Paper>
+            </Box>
 
-            <Paper elevation={3} sx={{ p: 3 }}>
+            <Box sx={{ p: 3 }}> {/* Paper -> Box, elevation 제거 */}
                 <Typography variant="h6" component="h2" gutterBottom>
                     헬퍼 텍스트 및 에러 상태
                 </Typography>
@@ -87,9 +87,9 @@ const SelectPage = () => {
                 <Typography variant="body2" sx={{ mt: 1 }}>
                     선택된 값: {fruit}
                 </Typography>
-            </Paper>
+            </Box>
 
-            <Paper elevation={3} sx={{ p: 3 }}>
+            <Box sx={{ p: 3 }}> {/* Paper -> Box, elevation 제거 */}
                 <Typography variant="h6" component="h2" gutterBottom>
                     비활성화된 DsSelect
                 </Typography>
@@ -101,9 +101,9 @@ const SelectPage = () => {
                     disabled={true}
                     id="disabled-select"
                 />
-            </Paper>
+            </Box>
 
-            <Paper elevation={3} sx={{ p: 3 }}>
+            <Box sx={{ p: 3 }}> {/* Paper -> Box, elevation 제거 */}
                 <Typography variant="h6" component="h2" gutterBottom>
                     필수 항목 (Required) 및 빈 값 허용
                 </Typography>
@@ -125,9 +125,9 @@ const SelectPage = () => {
                 <Typography variant="body2" sx={{ mt: 1 }}>
                     선택된 값: {city || "선택 안됨"}
                 </Typography>
-            </Paper>
+            </Box>
 
-            <Paper elevation={3} sx={{ p: 3 }}>
+            <Box sx={{ p: 3 }}> {/* Paper -> Box, elevation 제거 */}
                 <Typography variant="h6" component="h2" gutterBottom>
                     `defaultValue` 사용 예시
                 </Typography>
@@ -143,9 +143,9 @@ const SelectPage = () => {
                 <Typography variant="body2" sx={{ mt: 1 }}>
                     선택된 값: {country}
                 </Typography>
-            </Paper>
+            </Box>
 
-            <Paper elevation={3} sx={{ p: 3 }}>
+            <Box sx={{ p: 3 }}> {/* Paper -> Box, elevation 제거 */}
                 <Typography variant="h6" component="h2" gutterBottom>
                     `renderValue` 사용 예시
                 </Typography>
@@ -164,9 +164,9 @@ const SelectPage = () => {
                 <Typography variant="body2" sx={{ mt: 1 }}>
                     실제 값: {country}
                 </Typography>
-            </Paper>
+            </Box>
 
-            <Paper elevation={3} sx={{ p: 3 }}>
+            <Box sx={{ p: 3 }}> {/* Paper -> Box, elevation 제거 */}
                 <Typography variant="h6" component="h2" gutterBottom>
                     커스텀 FormControl 스타일
                 </Typography>
@@ -182,7 +182,7 @@ const SelectPage = () => {
                         p: 1, // 내부 패딩
                     }}
                 />
-            </Paper>
+            </Box>
         </Stack>
     );
 };

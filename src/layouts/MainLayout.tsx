@@ -34,12 +34,13 @@ const menuGroups: MenuGroup[] = [
     {
         title: 'Components',
         items: [
-            { text: 'Autocomplete', path: '/inputs/autocomplete' },
+            // { text: 'Autocomplete', path: '/inputs/autocomplete' },
             {
                 text: 'Input', // Autocomplete 하위 기능으로 포함 또는 별도 그룹
                 path: '/inputs/autocomplete/combo', // 기본 Combo 페이지 경로
                 children: [
                     { text: 'Textfield', path: '/textfield' },
+                    { text: 'Select', path: '/select'},
                     { text: 'Checkbox', path: '/checkbox' },
                     { text: 'Radio Group', path: '/radio-group' },
                     { text: 'Rating', path: '/rating' },
