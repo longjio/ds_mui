@@ -13,8 +13,8 @@ const ButtonGroupPage = () => {
 
     return (
         <Stack spacing={4} sx={{ p: 2 }}>
-            <Typography variant="h4" gutterBottom>
-                DsButtonGroup Component Page
+            <Typography variant="h1" gutterBottom>
+                Button Group
             </Typography>
 
             {/* Basic ButtonGroup (Contained, Primary - Default) */}

@@ -101,6 +101,9 @@ const AppBarPage = () => {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column',  width: '100%', minHeight: '100vh' }}>
+            <Typography variant="h1" component="h1" gutterBottom>
+                App Bar
+            </Typography>
             {/* 페이지 내용 */}
             <Container component="main" sx={{ mt: 4, mb: 2, flexGrow: 1 }}>
                 {/* 예시 1: 기본 DsAppBar (기존 코드 유지) */}

@@ -13,75 +13,79 @@ const drawerWidth = 240;
 
 interface MenuItem {
     text: string;
-    path: string;
+    path?: string; // path를 선택적으로 변경하여 링크가 없는 메뉴 아이템을 허용
+    id: string; // 고유 ID 추가
     children?: MenuItem[]; // 하위 메뉴 아이템
 }
 
 interface MenuGroup {
     title: string;
+    id: string; // 고유 ID 추가
     items: MenuItem[];
 }
 
-// 메뉴 구조 정의 (경로 및 그룹핑 수정)
+// 메뉴 구조 정의 (경로 및 그룹핑 수정, 고유 ID 추가)
 const menuGroups: MenuGroup[] = [
     {
         title: 'Button',
+        id: 'group-button',
         items: [
-            { text: 'Button', path: '/button' },
-            { text: 'ButtonGroup', path: '/button-group' },
+            { text: 'Button', path: '/button', id: 'item-button' },
+            { text: 'ButtonGroup', path: '/button-group', id: 'item-button-group' },
         ],
     },
     {
         title: 'Components',
+        id: 'group-components',
         items: [
-            // { text: 'Autocomplete', path: '/inputs/autocomplete' },
             {
-                text: 'Input', // Autocomplete 하위 기능으로 포함 또는 별도 그룹
-                path: '/inputs/autocomplete/combo', // 기본 Combo 페이지 경로
+                text: 'Input', // 이 항목은 링크 없이 하위 메뉴만 펼치는 역할
+                id: 'item-input-parent', // Input 자체의 path 제거
                 children: [
-                    { text: 'Textfield', path: '/textfield' },
-                    { text: 'Select', path: '/select'},
-                    { text: 'Checkbox', path: '/checkbox' },
-                    { text: 'Radio Group', path: '/radio-group' },
-                    { text: 'Rating', path: '/rating' },
-                    { text: 'Slider', path: '/slider' },
-                    { text: 'Switch', path: '/switch' },
+                    { text: 'Autocomplete', path: '/autocomplete', id: 'item-autocomplete' },
+                    { text: 'Textfield', path: '/textfield', id: 'item-textfield' },
+                    { text: 'Select', path: '/select', id: 'item-select'},
+                    { text: 'Checkbox', path: '/checkbox', id: 'item-checkbox' },
+                    { text: 'Radio Group', path: '/radio-group', id: 'item-radio-group' },
+                    { text: 'Rating', path: '/rating', id: 'item-rating' },
+                    { text: 'Slider', path: '/slider', id: 'item-slider' },
+                    { text: 'Switch', path: '/switch', id: 'item-switch' },
                 ],
             },
-
         ],
     },
     {
         title: 'Surface',
+        id: 'group-surface',
         items: [
-            { text: 'Accordion', path: '/accordion' },
-            { text: 'Appbar', path: '/appbar' }, // 이 Appbar는 레이아웃의 Appbar와 다른 컴포넌트 예시일 수 있음
-            { text: 'Card', path: '/card' },
+            { text: 'Accordion', path: '/accordion', id: 'item-accordion' },
+            { text: 'Appbar', path: '/appbar', id: 'item-appbar' },
+            { text: 'Card', path: '/card', id: 'item-card' },
         ],
     },
     {
         title: 'Layout',
+        id: 'group-layout',
         items: [
-            { text: 'Grid', path: '/grid' },
+            { text: 'Grid', path: '/grid', id: 'item-grid' },
         ],
     },
     {
         title: 'Foundations',
+        id: 'group-foundations',
         items: [
-            { text: 'Typography', path: '/typography' },
+            { text: 'Typography', path: '/typography', id: 'item-typography' },
         ],
     },
     {
         title: 'MUI X',
+        id: 'group-mui-x',
         items: [
-            { text: 'Data Grid', path: '/data-grid' },
+            { text: 'Data Grid', path: '/data-grid', id: 'item-data-grid' },
         ],
     },
-
 ];
 
-// MainLayoutProps는 Outlet을 사용하므로 children prop이 필요 없어졌습니다.
-// const MainLayout = ({ children }: MainLayoutProps) => {
 const MainLayout = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -94,47 +98,50 @@ const MainLayout = () => {
     const drawerContent = (
         <>
             <Toolbar /> {/* AppBar 높이만큼 공간 확보 */}
-            {menuGroups.map((group) => ( // index 대신 group.title을 key로 사용 (고유하다면)
+            {menuGroups.map((group) => (
                 <Accordion
-                    key={group.title} // 그룹 제목이 고유하다고 가정
+                    key={group.id} // 그룹 ID를 key로 사용
                     disableGutters
                     elevation={0}
-                    defaultExpanded // 기본적으로 열려있게 하거나, 특정 조건에 따라 제어 가능
+                    defaultExpanded
                     sx={{
                         borderTop: '1px solid rgba(0, 0, 0, 0.12)',
-                        '&:before': { display: 'none' }, // 아코디언 기본 상단 선 제거
-                        '&:last-child': { borderBottom: '1px solid rgba(0, 0, 0, 0.12)' } // 마지막 아코디언 하단 선 추가
+                        '&:before': { display: 'none' },
+                        '&:last-child': { borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }
                     }}
                 >
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
-                        aria-controls={`${group.title.replace(/\s+/g, '-').toLowerCase()}-content`}
-                        id={`${group.title.replace(/\s+/g, '-').toLowerCase()}-header`}
+                        aria-controls={`${group.id}-content`}
+                        id={`${group.id}-header`}
                     >
                         <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                             {group.title}
                         </Typography>
                     </AccordionSummary>
-                    <AccordionDetails sx={{ p: 0 }}> {/* AccordionDetails의 기본 패딩 제거 */}
+                    <AccordionDetails sx={{ p: 0 }}>
                         <List disablePadding>
                             {group.items.map((item) => (
-                                <React.Fragment key={item.path}> {/* item.text 대신 고유한 item.path를 key로 사용 */}
+                                <React.Fragment key={item.id}> {/* 아이템 ID를 key로 사용 */}
                                     <ListItemButton
-                                        component={Link}
-                                        to={item.path}
-                                        onClick={isMobile ? handleDrawerToggle : undefined} // 모바일에서 클릭 시 드로어 닫기
-                                        sx={{ pl: item.children ? 3 : 4 }} // 하위 메뉴가 있으면 들여쓰기 조정
+                                        component={item.path ? Link : 'div'}
+                                        to={item.path} // path가 없으면 undefined
+                                        onClick={
+                                            item.path && isMobile ? handleDrawerToggle : undefined
+                                        }
+                                        sx={{ pl: item.children ? 3 : 4 }}
                                     >
                                         <ListItemText primary={item.text} />
-                                        {/* 하위 메뉴가 있다면 펼침/닫힘 아이콘 등을 추가할 수도 있음 */}
                                     </ListItemButton>
                                     {item.children?.map((subItem) => (
                                         <ListItemButton
-                                            key={subItem.path} // subItem.text 대신 고유한 subItem.path를 key로 사용
-                                            component={Link}
-                                            to={subItem.path}
-                                            onClick={isMobile ? handleDrawerToggle : undefined} // 모바일에서 클릭 시 드로어 닫기
-                                            sx={{ pl: 6 }} // 하위 메뉴 들여쓰기
+                                            key={subItem.id} // 하위 아이템 ID를 key로 사용
+                                            component={subItem.path ? Link : 'div'} // Apply conditional logic here
+                                            to={subItem.path} // Safe: to is only passed if component is Link
+                                            onClick={
+                                                subItem.path && isMobile ? handleDrawerToggle : undefined // Consistent onClick
+                                            }
+                                            sx={{ pl: 6 }}
                                         >
                                             <ListItemText primary={subItem.text} />
                                         </ListItemButton>
@@ -154,7 +161,7 @@ const MainLayout = () => {
             <AppBar
                 position="fixed"
                 sx={{
-                    zIndex: theme.zIndex.drawer + 1, // Drawer 위에 AppBar가 오도록 설정
+                    zIndex: theme.zIndex.drawer + 1,
                 }}
             >
                 <Toolbar>
@@ -180,7 +187,7 @@ const MainLayout = () => {
                 open={isMobile ? mobileOpen : true}
                 onClose={isMobile ? handleDrawerToggle : undefined}
                 ModalProps={{
-                    keepMounted: true, // Better open performance on mobile.
+                    keepMounted: true,
                 }}
                 sx={{
                     width: drawerWidth,
@@ -199,11 +206,11 @@ const MainLayout = () => {
                 sx={{
                     flexGrow: 1,
                     px: 6, py: 5,
-                    width: { sm: `calc(100% - ${drawerWidth}px)` } // 데스크탑에서 Drawer 너비만큼 제외
+                    width: { sm: `calc(100% - ${drawerWidth}px)` }
                 }}
             >
-                <Toolbar /> {/* AppBar와 같은 높이의 공간을 만들어 콘텐츠가 AppBar 뒤에 가려지지 않도록 함 */}
-                <Outlet /> {/* 중첩된 라우트의 컴포넌트가 여기에 렌더링됨 */}
+                <Toolbar />
+                <Outlet />
             </Box>
         </Box>
     );

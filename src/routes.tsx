@@ -17,6 +17,7 @@ import RatingPage from './pages/RatingPage';
 import SliderPage from './pages/SliderPage';
 import SwitchPage from './pages/SwitchPage';
 import DataGridPage from './pages/DataGridPage';
+import AutocompletePage from './pages/AutocompletePage';
 /// Layout
 import GridPage from './pages/GridPage';
 /// Surface
@@ -34,6 +35,7 @@ export const routesConfig: RouteObject[] = [
             { path: 'button', element: <ButtonPage /> },
             { path: 'button-group', element: <ButtonGroupPage /> },
             // inputs
+            { path: 'autocomplete', element: <AutocompletePage /> },
             { path: 'typography', element: <TypographyPage /> },
             { path: 'checkbox', element: <CheckboxPage /> },
             { path: 'radio-group', element: <RadioGroupPage /> },
@@ -53,12 +55,4 @@ export const routesConfig: RouteObject[] = [
             // { path: '*', element: <NotFoundPage /> } // 404 페이지
         ],
     },
-    // 다른 최상위 라우트 그룹 (예: 인증 레이아웃)
-    // {
-    //   path: '/auth',
-    //   element: <AuthLayout />,
-    //   children: [
-    //     { path: 'login', element: <LoginPage /> },
-    //   ]
-    // }
 ];

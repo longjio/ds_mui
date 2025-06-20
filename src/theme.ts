@@ -34,6 +34,11 @@ const theme = createTheme({
             '"Noto Sans KR"',
             'sans-serif',
         ].join(','),
+        h1: {
+            fontSize: '2.25rem',
+            fontWeight: 600,
+            // ... 다른 h1 스타일
+        },
         button: {
             textTransform: 'none',
         },

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Stack, Typography, Box } from '@mui/material';
-import DsRating from '../components/input/DsRating'; // DsRating 컴포넌트의 실제 경로로 수정해주세요.
+import Rating from '../components/input/DsRating'; // Rating 컴포넌트의 실제 경로로 수정해주세요.
 
 const RatingPage = () => {
     const [controlledValue, setControlledValue] = useState<number | null>(2.5);
@@ -32,15 +32,15 @@ const RatingPage = () => {
 
     return (
         <Stack spacing={4} sx={{ p: 3 }}>
-            <Typography variant="h4" component="h1" gutterBottom>
-                DsRating 컴포넌트 데모 페이지
+            <Typography variant="h1" component="h1" gutterBottom>
+                Rating
             </Typography>
 
             <Box>
                 <Typography variant="h6" component="h2" gutterBottom>
-                    기본 DsRating (레이블 포함)
+                    기본 Rating (레이블 포함)
                 </Typography>
-                <DsRating
+                <Rating
                     label="서비스 만족도"
                     name="satisfaction-basic"
                     defaultValue={3}
@@ -49,9 +49,9 @@ const RatingPage = () => {
 
             <Box>
                 <Typography variant="h6" component="h2" gutterBottom>
-                    제어되는 DsRating (Controlled)
+                    제어되는 Rating (Controlled)
                 </Typography>
-                <DsRating
+                <Rating
                     label="나의 평점"
                     name="controlled-rating"
                     value={controlledValueWithLabel}
@@ -64,9 +64,9 @@ const RatingPage = () => {
 
             <Box>
                 <Typography variant="h6" component="h2" gutterBottom>
-                    읽기 전용 DsRating (Read Only)
+                    읽기 전용 Rating (Read Only)
                 </Typography>
-                <DsRating
+                <Rating
                     label="평균 평점"
                     name="read-only-rating"
                     value={4.5}
@@ -77,9 +77,9 @@ const RatingPage = () => {
 
             <Box>
                 <Typography variant="h6" component="h2" gutterBottom>
-                    비활성화된 DsRating (Disabled)
+                    비활성화된 Rating (Disabled)
                 </Typography>
-                <DsRating
+                <Rating
                     label="이전 평점"
                     name="disabled-rating"
                     value={2}
@@ -89,9 +89,9 @@ const RatingPage = () => {
 
             <Box>
                 <Typography variant="h6" component="h2" gutterBottom>
-                    정밀도 0.5 DsRating (Precision 0.5)
+                    정밀도 0.5 Rating (Precision 0.5)
                 </Typography>
-                <DsRating
+                <Rating
                     label="세부 평점"
                     name="precision-rating"
                     value={precisionValue}
@@ -105,9 +105,9 @@ const RatingPage = () => {
 
             <Box>
                 <Typography variant="h6" component="h2" gutterBottom>
-                    최대값 변경 DsRating (Max Value)
+                    최대값 변경 Rating (Max Value)
                 </Typography>
-                <DsRating
+                <Rating
                     label="10점 만점 평가"
                     name="max-value-rating"
                     defaultValue={7}
@@ -117,9 +117,9 @@ const RatingPage = () => {
 
             <Box>
                 <Typography variant="h6" component="h2" gutterBottom>
-                    레이블 없는 DsRating
+                    레이블 없는 Rating
                 </Typography>
-                <DsRating
+                <Rating
                     name="no-label-rating"
                     value={controlledValue}
                     onChange={handleControlledChange}
@@ -133,7 +133,7 @@ const RatingPage = () => {
                 <Typography variant="h6" component="h2" gutterBottom>
                     커스텀 Box 스타일 적용
                 </Typography>
-                <DsRating
+                <Rating
                     label="스타일 적용된 평점"
                     name="custom-box-style-rating"
                     defaultValue={3}

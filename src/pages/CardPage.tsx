@@ -127,7 +127,7 @@ const CardPage = () => {
     return (
         <Container sx={{ py: 4 }}>
             <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 4 }}>
-                Card 컴포넌트
+                Card
             </Typography>
 
             <Grid container spacing={4}>

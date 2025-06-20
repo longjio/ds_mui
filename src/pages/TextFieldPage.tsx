@@ -44,8 +44,8 @@ const TextFieldPage = () => {
 
     return (
         <Stack spacing={2} sx={{ p: 3 }}> {/* 전체 페이지 컨테이너 */}
-            <Typography variant="h4" component="h1" gutterBottom>
-                DsTextField 컴포넌트 데모 (BasicTextFields 스타일)
+            <Typography variant="h1" component="h1" gutterBottom>
+                TextField
             </Typography>
 
             <Box

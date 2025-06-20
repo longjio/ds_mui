@@ -15,7 +15,7 @@ const ButtonPage = () => {
     return (
         <Stack spacing={4} sx={{ p: 2 }}>
             <Typography variant="h4" gutterBottom>
-                DsButton Component Page
+                Button
             </Typography>
 
             {/* 토글 스위치 Box 제거 */}

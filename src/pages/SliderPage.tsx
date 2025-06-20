@@ -47,8 +47,8 @@ const SliderPage = () => {
 
     return (
         <Stack spacing={4} sx={{ p: 3, maxWidth: '600px'}}>
-            <Typography variant="h4" component="h1" gutterBottom>
-                DsSlider 컴포넌트 데모 페이지
+            <Typography variant="h1" component="h1" gutterBottom>
+                Slider
             </Typography>
 
             {/* 예시 1: 기본 단일 값 슬라이더 */}

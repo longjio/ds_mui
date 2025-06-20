@@ -26,8 +26,8 @@ export default function CheckboxPage() {
 
     return (
         <Box sx={{ padding: 3 }}>
-            <Typography variant="h4" gutterBottom>
-                Checkbox Page
+            <Typography variant="h1" component="h1" gutterBottom>
+                Checkbox
             </Typography>
 
             <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>

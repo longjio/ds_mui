@@ -7,8 +7,8 @@ import DsAccordion from '../components/surface/DsAccordion'; // DsAccordion 컴�
 const AccordionPage = () => {
     return (
         <Stack spacing={3} sx={{ p: 3 }}>
-            <Typography variant="h4" component="h1" gutterBottom>
-                DsAccordion 컴포넌트 데모 페이지
+            <Typography variant="h1" component="h1" gutterBottom>
+                Accordion
             </Typography>
 
             {/* 예시 1: 기본 아코디언 */}

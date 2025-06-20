@@ -61,14 +61,14 @@ const RadioGroupPage = () => {
 
     return (
         <Stack spacing={4} sx={{ p: 3 }}>
-            <Typography variant="h4" component="h1" gutterBottom>
-                DsRadioGroup 및 Radio 컴포넌트 데모 페이지
+            <Typography variant="h1" component="h1" gutterBottom>
+                Radio Group
             </Typography>
 
             {/* --- 기존 DsRadioGroup 예시들 --- */}
             <Stack spacing={2} sx={{ p: 3, border: '1px solid #e0e0e0' }}>
                 <Typography variant="h6" component="h2" gutterBottom>
-                    DsRadioGroup: 기본 사용법
+                    RadioGroup 세로 정렬
                 </Typography>
                 <DsRadioGroup
                     id="gender-group"
@@ -85,7 +85,7 @@ const RadioGroupPage = () => {
 
             <Stack spacing={2} sx={{ p: 3, border: '1px solid #e0e0e0' }}>
                 <Typography variant="h6" component="h2" gutterBottom>
-                    DsRadioGroup: 가로 정렬 (row prop)
+                    RadioGroup 가로 정렬
                 </Typography>
                 <DsRadioGroup
                     id="options-group-row"
@@ -103,7 +103,7 @@ const RadioGroupPage = () => {
 
             <Stack spacing={2} sx={{ p: 3, border: '1px solid #e0e0e0' }}>
                 <Typography variant="h6" component="h2" gutterBottom>
-                    DsRadioGroup: 비활성화 (disabled prop)
+                    RadioGroup 비활성화 (disabled prop)
                 </Typography>
                 <DsRadioGroup
                     id="fruits-group-disabled"
@@ -122,7 +122,7 @@ const RadioGroupPage = () => {
             {/* --- 새로운 섹션: Radio 버튼 크기 데모 --- */}
             <Stack spacing={2} sx={{ p: 3, border: '1px solid #e0e0e0' }}>
                 <Typography variant="h6" component="h2" gutterBottom>
-                    Radio: 크기 조절 (Size)
+                    Radio 크기 조절 (Size)
                 </Typography>
                 <Box> {/* 제공된 예제처럼 div 대신 Box 사용 */}
                     <Radio {...controlProps('a')} size="small" />

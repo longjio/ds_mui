@@ -51,8 +51,8 @@ const SelectPage = () => {
 
     return (
         <Stack spacing={4} sx={{ p: 3}}>
-            <Typography variant="h4" component="h1" gutterBottom>
-                Select 컴포넌트
+            <Typography variant="h1" component="h1" gutterBottom>
+                Select
             </Typography>
 
             <Box sx={{ p: 3 }}> {/* Paper -> Box, elevation 제거 */}
@@ -65,6 +65,7 @@ const SelectPage = () => {
                     onChange={handleAgeChange}
                     items={ageItems}
                     id="age-select"
+                    formControlSx={{ width: 400 }} // 너비 추가
                 />
                 <Typography variant="body2" sx={{ mt: 1 }}>
                     선택된 값: {age}
@@ -83,6 +84,7 @@ const SelectPage = () => {
                     id="fruit-select-error"
                     helperText={fruit === 'grape' ? "포도는 알러지가 있을 수 있습니다." : "좋아하는 과일을 선택하세요."}
                     error={fruit === 'grape'} // 'grape' 선택 시 에러 상태
+                    formControlSx={{ width: 400 }} // 너비 추가
                 />
                 <Typography variant="body2" sx={{ mt: 1 }}>
                     선택된 값: {fruit}
@@ -100,6 +102,7 @@ const SelectPage = () => {
                     items={ageItems}
                     disabled={true}
                     id="disabled-select"
+                    formControlSx={{ width: 400 }} // 너비 추가
                 />
             </Box>
 
@@ -121,6 +124,7 @@ const SelectPage = () => {
                     required={true}
                     helperText={!city ? "도시를 선택해주세요." : ""}
                     error={!city}
+                    formControlSx={{ width: 400 }} // 너비 추가
                 />
                 <Typography variant="body2" sx={{ mt: 1 }}>
                     선택된 값: {city || "선택 안됨"}
@@ -139,6 +143,7 @@ const SelectPage = () => {
                     defaultValue="KR" // 초기 렌더링 시 이 값이 사용되지만, value prop이 우선됨
                     id="country-default-select"
                     helperText="value prop이 있으면 defaultValue는 초기 렌더링에만 영향을 줍니다."
+                    formControlSx={{ width: 400 }} // 너비 추가
                 />
                 <Typography variant="body2" sx={{ mt: 1 }}>
                     선택된 값: {country}
@@ -160,6 +165,7 @@ const SelectPage = () => {
                         return `선택: ${selectedItem ? selectedItem.label : '알 수 없음'} (코드: ${selectedValue})`;
                     }}
                     helperText="선택된 값을 원하는 형태로 표시합니다."
+                    formControlSx={{ width: 400 }} // 너비 추가
                 />
                 <Typography variant="body2" sx={{ mt: 1 }}>
                     실제 값: {country}
@@ -180,6 +186,7 @@ const SelectPage = () => {
                         backgroundColor: 'aliceblue',
                         borderRadius: '8px',
                         p: 1, // 내부 패딩
+                        width: 400, // 너비 추가
                     }}
                 />
             </Box>
