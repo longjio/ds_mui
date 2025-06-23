@@ -61,3 +61,46 @@ IntelliJ가 프로젝트 인덱싱을 처음부터 다시 진행합니다.
 ToggleButton: 어떤 상태(State)를 켜거나 끄거나, 여러 옵션 중 하나를 선택하기 위해 사용. 클릭하면 버튼의 선택 상태가 유지되면서 시각적으로도 선택되었음을 보여줌.
 설정 변경, 필터 적용, 보기 모드 전환 (예: 목록 보기/그리드 보기), 텍스트 스타일 적용 (예: 굵게/기울임꼴) 등과 같이 UI의 상태나 설정을 변경할 때 사용
 selected prop이 true이면 버튼이 선택된 상태로 보이고, false이면 선택되지 않은 상태로 보임.
+
+
+다크테마 구현
+import * as React from 'react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+
+export function App() {
+  return (
+    <ThemeProvider theme={darkTheme}>
+      {/* 여기에 기존 컴포넌트들 */}
+    </ThemeProvider>
+  );
+}
+
+다크/라이트 전환
+import React, { useState } from 'react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Button } from '@mui/material';
+
+export function App() {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const theme = createTheme({
+    palette: {
+      mode: isDarkMode ? 'dark' : 'light',
+    },
+  });
+
+  return (
+    <ThemeProvider theme={theme}>
+      <div style={{ padding: '20px' }}>
+        <Button variant="contained" onClick={() => setIsDarkMode(!isDarkMode)}>
+          {isDarkMode ? '라이트 모드로 전환' : '다크 모드로 전환'}
+        </Button>
+      </div>
+    </ThemeProvider>
+  );

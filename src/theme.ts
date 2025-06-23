@@ -1,11 +1,18 @@
 import 'pretendard/dist/web/static/pretendard.css';
 import { createTheme } from '@mui/material/styles';
 
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#1A3C65',
-        },
+// const theme = createTheme({
+//     palette: {
+//         primary: {
+//             main: '#1A3C65',
+//         },
+export const getTheme = (mode: 'light' | 'dark') =>
+    createTheme({
+        palette: {
+            mode,
+            primary: {
+                main: '#1A3C65',
+            },
         // secondary: { // secondary 색상도 필요하다면 여기에 정의할 수 있습니다.
         //   main: '#dc004e',
         // },
@@ -66,5 +73,5 @@ const theme = createTheme({
     spacing: 4,
 });
 
-export default theme;
+// export default theme;
 
