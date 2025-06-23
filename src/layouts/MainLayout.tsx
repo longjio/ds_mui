@@ -164,7 +164,8 @@ const MainLayout = () => {
                     zIndex: theme.zIndex.drawer + 1,
                 }}
             >
-                <Toolbar>
+                <Toolbar disableGutters
+                         sx={{ paddingLeft: '25px' }}>
                     {isMobile && (
                         <IconButton
                             color="inherit"
@@ -177,7 +178,7 @@ const MainLayout = () => {
                         </IconButton>
                     )}
                     <Typography variant="h6" noWrap component={Link} to="/" sx={{ color: 'inherit', textDecoration: 'none' }}>
-                        My Design System
+                        SI Design System
                     </Typography>
                 </Toolbar>
             </AppBar>
