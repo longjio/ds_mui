@@ -1,148 +1,132 @@
 // D:/ds_mui/src/layouts/MainLayout.tsx
-import React, { useState } from 'react';
-import { Outlet, Link } from 'react-router-dom'; // Outlet과 Link 임포트
+
+import React, { useState, useEffect } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
-    AppBar, Toolbar, Typography, Box, CssBaseline, Drawer,
-    IconButton, List, ListItemButton, ListItemText,
-    useTheme, useMediaQuery, Accordion, AccordionSummary, AccordionDetails,
+    AppBar,
+    Toolbar,
+    Typography,
+    Box,
+    CssBaseline,
+    Drawer,
+    IconButton,
+    List,
+    ListItemButton,
+    ListItemText,
+    useTheme,
+    useMediaQuery,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    Tabs,
+    Tab,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CloseIcon from '@mui/icons-material/Close';
+import { menuGroups, MenuItem } from '../app-routes'; // app-routes에서 메뉴 정보만 가져옴
 
 const drawerWidth = 240;
 
-interface MenuItem {
-    text: string;
-    path?: string; // path를 선택적으로 변경하여 링크가 없는 메뉴 아이템을 허용
-    id: string; // 고유 ID 추가
-    children?: MenuItem[]; // 하위 메뉴 아이템
-}
-
-interface MenuGroup {
-    title: string;
-    id: string; // 고유 ID 추가
-    items: MenuItem[];
-}
-
-// 메뉴 구조 정의 (경로 및 그룹핑 수정, 고유 ID 추가)
-const menuGroups: MenuGroup[] = [
-    {
-        title: 'Button',
-        id: 'group-button',
-        items: [
-            { text: 'Button', path: '/button', id: 'item-button' },
-            { text: 'ButtonGroup', path: '/button-group', id: 'item-button-group' },
-        ],
-    },
-    {
-        title: 'Components',
-        id: 'group-components',
-        items: [
-            {
-                text: 'Input', // 이 항목은 링크 없이 하위 메뉴만 펼치는 역할
-                id: 'item-input-parent', // Input 자체의 path 제거
-                children: [
-                    { text: 'Autocomplete', path: '/autocomplete', id: 'item-autocomplete' },
-                    { text: 'Textfield', path: '/textfield', id: 'item-textfield' },
-                    { text: 'Select', path: '/select', id: 'item-select'},
-                    { text: 'Checkbox', path: '/checkbox', id: 'item-checkbox' },
-                    { text: 'Radio Group', path: '/radio-group', id: 'item-radio-group' },
-                    { text: 'Rating', path: '/rating', id: 'item-rating' },
-                    { text: 'Slider', path: '/slider', id: 'item-slider' },
-                    { text: 'Switch', path: '/switch', id: 'item-switch' },
-                ],
-            },
-        ],
-    },
-    {
-        title: 'Surface',
-        id: 'group-surface',
-        items: [
-            { text: 'Accordion', path: '/accordion', id: 'item-accordion' },
-            { text: 'Appbar', path: '/appbar', id: 'item-appbar' },
-            { text: 'Card', path: '/card', id: 'item-card' },
-        ],
-    },
-    {
-        title: 'Layout',
-        id: 'group-layout',
-        items: [
-            { text: 'Grid', path: '/grid', id: 'item-grid' },
-        ],
-    },
-    {
-        title: 'Foundations',
-        id: 'group-foundations',
-        items: [
-            { text: 'Typography', path: '/typography', id: 'item-typography' },
-        ],
-    },
-    {
-        title: 'MUI X',
-        id: 'group-mui-x',
-        items: [
-            { text: 'Data Grid', path: '/data-grid', id: 'item-data-grid' },
-        ],
-    },
-];
+// 탭에 저장될 데이터 타입 (children 제외)
+type OpenTabInfo = Omit<MenuItem, 'children'>;
 
 const MainLayout = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [mobileOpen, setMobileOpen] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // MDI 탭 상태 관리
+    const [openTabs, setOpenTabs] = useState<OpenTabInfo[]>([]);
+    const [activeTabId, setActiveTabId] = useState<string | null>(null);
+
+    // URL 변경 감지하여 탭 상태 동기화
+    useEffect(() => {
+        const currentPath = location.pathname;
+        // 현재 경로가 탭 목록에 있으면 해당 탭을 활성화
+        if (openTabs.some(tab => tab.path === currentPath)) {
+            setActiveTabId(currentPath);
+        } else if (currentPath === '/') {
+            // 홈 경로이면 활성 탭 없음
+            setActiveTabId(null);
+        }
+    }, [location.pathname, openTabs]);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
 
+    // 메뉴 아이템 클릭 핸들러
+    const handleMenuClick = (menuItem: MenuItem) => {
+        if (!menuItem.path) return;
+
+        // 이미 열린 탭이 아니면 새로 추가
+        if (!openTabs.some((tab: OpenTabInfo) => tab.id === menuItem.id)) {
+            const newTab: OpenTabInfo = {
+                id: menuItem.id,
+                text: menuItem.text,
+                path: menuItem.path,
+            };
+            setOpenTabs(prevTabs => [...prevTabs, newTab]);
+        }
+
+        // 클릭된 탭으로 이동 및 활성화
+        navigate(menuItem.path);
+        setActiveTabId(menuItem.path);
+
+        // 모바일에서는 메뉴를 닫음
+        if (isMobile) {
+            handleDrawerToggle();
+        }
+    };
+
+    // 탭 변경 핸들러
+    const handleTabChange = (event: React.SyntheticEvent, newTabId: string) => {
+        setActiveTabId(newTabId);
+        navigate(newTabId); // 탭 변경 시 URL도 변경
+    };
+
+    // 탭 닫기 핸들러
+    const handleCloseTab = (e: React.MouseEvent, tabIdToClose: string) => {
+        e.stopPropagation(); // 탭 클릭 이벤트 전파 방지
+
+        const newTabs = openTabs.filter(tab => tab.path !== tabIdToClose);
+        setOpenTabs(newTabs);
+
+        // 닫힌 탭이 활성 탭이었을 경우
+        if (activeTabId === tabIdToClose) {
+            if (newTabs.length > 0) {
+                // 남은 탭 중 마지막 탭을 활성화
+                const newActiveTab = newTabs[newTabs.length - 1];
+                setActiveTabId(newActiveTab.path!);
+                navigate(newActiveTab.path!);
+            } else {
+                // 모든 탭이 닫혔을 경우
+                setActiveTabId(null);
+                navigate('/'); // 홈으로 이동
+            }
+        }
+    };
+
     const drawerContent = (
         <>
-            <Toolbar /> {/* AppBar 높이만큼 공간 확보 */}
+            <Toolbar />
             {menuGroups.map((group) => (
-                <Accordion
-                    key={group.id} // 그룹 ID를 key로 사용
-                    disableGutters
-                    elevation={0}
-                    defaultExpanded
-                    sx={{
-                        borderTop: '1px solid rgba(0, 0, 0, 0.12)',
-                        '&:before': { display: 'none' },
-                        '&:last-child': { borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }
-                    }}
-                >
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls={`${group.id}-content`}
-                        id={`${group.id}-header`}
-                    >
-                        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                            {group.title}
-                        </Typography>
+                <Accordion key={group.id} disableGutters elevation={0} defaultExpanded sx={{ borderTop: '1px solid rgba(0, 0, 0, 0.12)', '&:before': { display: 'none' }, '&:last-child': { borderBottom: '1px solid rgba(0, 0, 0, 0.12)' } }}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${group.id}-content`} id={`${group.id}-header`}>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{group.title}</Typography>
                     </AccordionSummary>
                     <AccordionDetails sx={{ p: 0 }}>
                         <List disablePadding>
                             {group.items.map((item) => (
-                                <React.Fragment key={item.id}> {/* 아이템 ID를 key로 사용 */}
-                                    <ListItemButton
-                                        component={item.path ? Link : 'div'}
-                                        to={item.path} // path가 없으면 undefined
-                                        onClick={
-                                            item.path && isMobile ? handleDrawerToggle : undefined
-                                        }
-                                        sx={{ pl: item.children ? 3 : 4 }}
-                                    >
+                                <React.Fragment key={item.id}>
+                                    <ListItemButton onClick={() => handleMenuClick(item)} sx={{ pl: item.children ? 3 : 4 }}>
                                         <ListItemText primary={item.text} />
                                     </ListItemButton>
                                     {item.children?.map((subItem) => (
-                                        <ListItemButton
-                                            key={subItem.id} // 하위 아이템 ID를 key로 사용
-                                            component={subItem.path ? Link : 'div'} // Apply conditional logic here
-                                            to={subItem.path} // Safe: to is only passed if component is Link
-                                            onClick={
-                                                subItem.path && isMobile ? handleDrawerToggle : undefined // Consistent onClick
-                                            }
-                                            sx={{ pl: 6 }}
-                                        >
+                                        <ListItemButton key={subItem.id} onClick={() => handleMenuClick(subItem)} sx={{ pl: 6 }}>
                                             <ListItemText primary={subItem.text} />
                                         </ListItemButton>
                                     ))}
@@ -156,62 +140,83 @@ const MainLayout = () => {
     );
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', height: '100vh', flexDirection: 'column' }}>
             <CssBaseline />
-            <AppBar
-                position="fixed"
-                sx={{
-                    zIndex: theme.zIndex.drawer + 1,
-                }}
-            >
-                <Toolbar disableGutters
-                         sx={{ paddingLeft: '25px' }}>
+            <AppBar position="fixed" sx={{ zIndex: theme.zIndex.drawer + 1 }}>
+                <Toolbar disableGutters sx={{ paddingLeft: '25px' }}>
                     {isMobile && (
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            edge="start"
-                            onClick={handleDrawerToggle}
-                            sx={{ mr: 2 }}
-                        >
+                        <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2 }}>
                             <MenuIcon />
                         </IconButton>
                     )}
-                    <Typography variant="h6" noWrap component={Link} to="/" sx={{ color: 'inherit', textDecoration: 'none' }}>
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        onClick={() => { setOpenTabs([]); setActiveTabId(null); navigate('/'); }}
+                        sx={{ color: 'inherit', textDecoration: 'none', cursor: 'pointer' }}
+                    >
                         SI Design System
                     </Typography>
                 </Toolbar>
             </AppBar>
 
-            <Drawer
-                variant={isMobile ? 'temporary' : 'permanent'}
-                open={isMobile ? mobileOpen : true}
-                onClose={isMobile ? handleDrawerToggle : undefined}
-                ModalProps={{
-                    keepMounted: true,
-                }}
-                sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    [`& .MuiDrawer-paper`]: {
+            <Box sx={{ display: 'flex', flexGrow: 1, mt: { xs: '56px', sm: '64px' } /* AppBar 높이만큼 */ }}>
+                <Drawer
+                    variant={isMobile ? 'temporary' : 'permanent'}
+                    open={isMobile ? mobileOpen : true}
+                    onClose={isMobile ? handleDrawerToggle : undefined}
+                    ModalProps={{ keepMounted: true }}
+                    sx={{
                         width: drawerWidth,
-                        boxSizing: 'border-box',
-                    },
-                }}
-            >
-                {drawerContent}
-            </Drawer>
+                        flexShrink: 0,
+                        [`& .MuiDrawer-paper`]: {
+                            width: drawerWidth,
+                            boxSizing: 'border-box',
+                        },
+                    }}
+                >
+                    {drawerContent}
+                </Drawer>
 
-            <Box
-                component="main"
-                sx={{
-                    flexGrow: 1,
-                    px: 6, py: 5,
-                    width: { sm: `calc(100% - ${drawerWidth}px)` }
-                }}
-            >
-                <Toolbar />
-                <Outlet />
+                <Box component="main" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
+                    {/* MDI 탭 바 */}
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'background.paper' }}>
+                        <Tabs
+                            value={activeTabId || false}
+                            onChange={handleTabChange}
+                            variant="scrollable"
+                            scrollButtons="auto"
+                            allowScrollButtonsMobile
+                        >
+                            {openTabs.map((tab) => (
+                                <Tab
+                                    key={tab.id}
+                                    value={tab.path}
+                                    label={
+                                        <Box component="span" sx={{ display: 'flex', alignItems: 'center' }}>
+                                            {tab.text}
+                                            <IconButton size="small" component="span" onClick={(e) => handleCloseTab(e, tab.path!)} sx={{ ml: 1.5 }}>
+                                                <CloseIcon fontSize="small" />
+                                            </IconButton>
+                                        </Box>
+                                    }
+                                />
+                            ))}
+                        </Tabs>
+                    </Box>
+
+                    {/* MDI 탭 컨텐츠 영역 */}
+                    <Box sx={{ flexGrow: 1, overflow: 'auto', p: 3 }}>
+                        {openTabs.length > 0 ? (
+                            <Outlet />
+                        ) : (
+                            <Typography variant="h5" color="text.secondary" sx={{ textAlign: 'center', mt: 4 }}>
+                                메뉴를 클릭하여 페이지를 열어주세요.
+                            </Typography>
+                        )}
+                    </Box>
+                </Box>
             </Box>
         </Box>
     );
