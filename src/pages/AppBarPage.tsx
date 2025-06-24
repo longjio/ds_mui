@@ -105,7 +105,7 @@ const AppBarPage = () => {
                 App Bar
             </Typography>
             {/* 페이지 내용 */}
-            <Container component="main" sx={{ mt: 4, mb: 2, flexGrow: 1 }}>
+            <Container maxWidth="xl" component="main" sx={{ mt: 4, mb: 2, flexGrow: 1 }}>
                 {/* 예시 1: 기본 DsAppBar (기존 코드 유지) */}
                 <DsAppBar
                     title="기본 AppBar"
@@ -120,7 +120,6 @@ const AppBarPage = () => {
                         showMenuButton={false}
                         actionButtonText="정보"
                         onActionButtonClick={() => alert('정보 버튼 클릭!')}
-                        color="secondary"
                     />
                     {/* ... Paper 설명 ... */}
                 </Box>
@@ -152,7 +151,7 @@ const AppBarPage = () => {
                             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                     <span role="img" aria-label="star" style={{ marginRight: '8px' }}>⭐</span>
-                                    특별한 제목 (프로필 메뉴)
+                                    특별한 제목
                                 </Box>
                             </Typography>
                             <div>
@@ -189,12 +188,12 @@ const AppBarPage = () => {
                         </Toolbar>
                     </AppBar>
                     <Paper sx={{ p: 2, mt: 2, height: '150px', overflowY: 'auto' }}>
-                        <Typography paragraph>
+                        <Typography>
                             이 AppBar는 MUI의 <code>AppBar</code>를 직접 사용하여 프로필 아이콘 클릭 시 메뉴가
                             나타나는 기능을 구현했습니다. <code>position="sticky"</code>로 설정되어 스크롤 시
                             상단에 고정됩니다.
                         </Typography>
-                        <Typography paragraph>스크롤을 위한 컨텐츠...</Typography>
+                        <Typography>스크롤을 위한 컨텐츠</Typography>
                     </Paper>
                 </Box>
 

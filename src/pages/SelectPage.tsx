@@ -1,7 +1,7 @@
 // src/pages/SelectPage.tsx
 
 import React, { useState } from 'react';
-import { Stack, Typography, Box, Divider } from '@mui/material'; // Paper import 제거
+import { Stack, Typography, Box } from '@mui/material'; // Paper import 제거
 import { DsSelect, DsSelectItem } from '../components/input/DsSelect'; // DsSelect 컴포넌트의 실제 경로로 수정해주세요.
 import { SelectChangeEvent } from '@mui/material/Select';
 

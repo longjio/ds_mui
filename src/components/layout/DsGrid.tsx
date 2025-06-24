@@ -1,13 +1,12 @@
 // src/components/layout/DsGrid.tsx
+
 import React from 'react';
+// MUI v7의 Grid와 그 타입을 정확히 가져옵니다.
 import Grid, { GridProps } from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 
-// BasicGrid 예제의 Item 스타일을 DsGrid 내부 또는 외부에 둘 수 있습니다.
-// 여기서는 DsGrid와 함께 사용될 가능성이 높으므로 내부에 Item을 정의하거나,
-// 혹은 별도의 스타일 파일로 분리 후 가져올 수 있습니다.
-// 우선은 DsGrid 파일 내에 Item을 정의하는 예시입니다.
+// 이 스타일 컴포넌트는 그대로 유지합니다.
 export const DsGridItemStyled = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -16,14 +15,16 @@ export const DsGridItemStyled = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-// DsGridProps는 MUI의 GridProps를 그대로 확장합니다.
-// 특별히 추가하거나 변경할 prop이 없다면 이대로 사용하거나,
-// GridProps를 직접 사용해도 무방합니다.
+// MUI v7의 GridProps를 직접 확장하여 모든 prop을 완벽하게 상속받습니다.
 export interface DsGridProps extends GridProps {}
 
-const DsGrid: React.FC<DsGridProps> = (props) => {
-    // props를 그대로 MUI Grid에 전달합니다.
-    return <Grid {...props} />;
-};
+// forwardRef를 사용하여 ref와 모든 props를 내부의 MUI Grid로 전달합니다.
+const DsGrid = React.forwardRef<React.ElementRef<typeof Grid>, DsGridProps>(
+    (props, ref) => {
+        return <Grid ref={ref} {...props} />;
+    }
+);
+
+DsGrid.displayName = 'DsGrid';
 
 export default DsGrid;

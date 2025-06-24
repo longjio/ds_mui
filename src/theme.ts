@@ -1,5 +1,6 @@
 import 'pretendard/dist/web/static/pretendard.css';
 import { createTheme } from '@mui/material/styles';
+import { grey } from '@mui/material/colors';
 
 // const theme = createTheme({
 //     palette: {
@@ -11,7 +12,8 @@ export const getTheme = (mode: 'light' | 'dark') =>
         palette: {
             mode,
             primary: {
-                main: '#1A3C65',
+                //main: '#1A3C65',
+                main: '#323F53',
             },
         // secondary: { // secondary 색상도 필요하다면 여기에 정의할 수 있습니다.
         //   main: '#dc004e',
@@ -54,9 +56,26 @@ export const getTheme = (mode: 'light' | 'dark') =>
         MuiAccordion: {
             styleOverrides: {
                 root: { // Accordion의 루트 요소
+                    border: `1px solid ${mode === 'light' ? grey[300] : grey[700]}`,
+                    '&:not(:first-of-type)': {
+                        borderTop: 'none',
+                    },
                     '&.Mui-expanded': { // 확장되었을 때
                         margin: 0,
                     },
+                    boxShadow: 'none',
+
+                    // 그룹의 첫 번째 아코디언을 선택합니다.
+                    '&:first-of-type': {
+                        borderTopLeftRadius: 0,
+                        borderTopRightRadius: 0,
+                    },
+                    // 그룹의 마지막 아코디언을 선택합니다.
+                    '&:last-of-type': {
+                        borderBottomLeftRadius: 0,
+                        borderBottomRightRadius: 0,
+                    },
+
                 },
             },
         },

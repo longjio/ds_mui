@@ -6,7 +6,7 @@ import DsAccordion from '../components/surface/DsAccordion'; // DsAccordion 컴�
 
 const AccordionPage = () => {
     return (
-        <Stack spacing={3} sx={{ p: 3 }}>
+        <Stack spacing={1.5} sx={{ p: 3 }}>
             <Typography variant="h1" component="h1" gutterBottom>
                 Accordion
             </Typography>
@@ -38,7 +38,7 @@ const AccordionPage = () => {
                 </DsAccordion>
             </Box>
 
-            <Divider sx={{ my: 2 }} />
+            <Divider sx={{ my: 2, border: 0 }} />
 
             {/* 예시 2: 기본적으로 펼쳐진 아코디언 */}
             <Box>
@@ -53,7 +53,7 @@ const AccordionPage = () => {
                 </DsAccordion>
             </Box>
 
-            <Divider sx={{ my: 2 }} />
+            <Divider sx={{ my: 2, border: 0 }} />
 
             {/* 예시 3: 비활성화된 아코디언 */}
             <Box>
@@ -73,7 +73,7 @@ const AccordionPage = () => {
                 </DsAccordion>
             </Box>
 
-            <Divider sx={{ my: 2 }} />
+            <Divider sx={{ my: 2, border: 0}} />
 
             {/* 예시 4: 여러 아코디언 그룹 */}
             <Box>

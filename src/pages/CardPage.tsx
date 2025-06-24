@@ -5,252 +5,146 @@ import {
     Box,
     Button,
     Container,
-    CardMedia as MuiCardMedia, // Renamed to MuiCardMedia to distinguish from any potential local CardMedia
+    CardMedia as MuiCardMedia,
     Typography,
-    Grid, // Note: The existing code uses <Grid size={4}>. If this Grid is from @mui/material, 'size' is not a standard prop. Standard props are xs, sm, md, etc.
-    Card,
-    CardHeader,
-    CardContent,
-    CardActions,
-    Collapse,
-    Avatar,
-    IconButton,
 } from '@mui/material';
-import { IconButtonProps } from '@mui/material/IconButton';
-import { styled } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import { DsCard, Bull } from '../components/surface/DsCard'; // DsCard 컴포넌트 경로를 확인해주세요.
+// 컴포넌트 import
+import { DsCard } from '../components/surface/DsCard';
+import DsGrid from '../components/layout/DsGrid'; // Grid v2 호환 DsGrid를 가져옵니다.
+import { RecipeReviewCard, RecipeReviewCardProps } from '../components/surface/RecipeReviewCard';
+
+// 이미지 import
 import Image1 from '../assets/images/img_burger.jpg';
 import Image2 from '../assets/images/img_coffee.jpg';
 
-// --- RecipeReviewCard START ---
-interface ExpandMoreProps extends IconButtonProps {
-    expand: boolean;
-}
-
-const ExpandMoreStyled = styled((props: ExpandMoreProps) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-    transform: expand ? 'rotate(180deg)' : 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-    }),
-}));
-
-function RecipeReviewCard() {
-    const [expanded, setExpanded] = React.useState(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
-
-    return (
-        <Card sx={{ maxWidth: 345, height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <CardHeader
-                avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        R
-                    </Avatar>
-                }
-                action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
-                }
-                title="Shrimp and Chorizo Paella"
-                subheader="September 14, 2016"
-            />
-            <MuiCardMedia
-                component="img"
-                height="194"
-                image={Image2} // Ensure this image exists in your public/static/images/cards/ folder
-                alt="coffee"
-            />
-            <CardContent sx={{ flexGrow: 1 }}>
-                <Typography variant="body2" color="text.secondary">
-                    This impressive paella is a perfect party dish and a fun meal to cook
-                    together with your guests. Add 1 cup of frozen peas along with the mussels,
-                    if you like.
-                </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                </IconButton>
-                <IconButton aria-label="share">
-                    <ShareIcon />
-                </IconButton>
-                <ExpandMoreStyled
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                >
-                    <ExpandMoreIcon />
-                </ExpandMoreStyled>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent>
-                    <Typography>Method:</Typography>
-                    <Typography>
-                        Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
-                        aside for 10 minutes.
-                    </Typography>
-                    <Typography sx={{ marginBottom: 2 }}>
-                        Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
-                        medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
-                        occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
-                        large plate and set aside, leaving chicken and chorizo in the pan. Add
-                        pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook,
-                        stirring often until thickened and fragrant, about 10 minutes. Add
-                        saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-                    </Typography>
-                </CardContent>
-            </Collapse>
-        </Card>
-    );
-}
-// --- RecipeReviewCard END ---
+// 데이터 정의 (변경 없음)
+const paellaRecipeData: RecipeReviewCardProps = {
+    avatarChar: 'P',
+    title: 'Shrimp and Chorizo Paella',
+    subheader: 'September 14, 2016',
+    imageSrc: Image2,
+    imageAlt: 'A delicious paella dish',
+    initialContent: 'This impressive paella is a perfect party dish and a fun meal to cook together with your guests.',
+    methodSteps: [
+        'Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes.',
+        'Heat oil in a paella pan. Add chicken, shrimp and chorizo, and cook until lightly browned.'
+    ]
+};
+const cardData = {
+    outlined: { title: 'Outlined Card', alertText: 'Benevolent' },
+    elevation: { title: 'Elevation Card', alertText: 'Future of AI' },
+    basic: { title: 'Basic Card' },
+    custom: { title: 'Custom Layout Card', alertText: 'Custom Lizard' },
+    quickTip: { title: 'Quick Tip', alertText: 'Quick Tip Improved' },
+};
 
 const CardPage = () => {
     const handleLearnMoreClick = (cardTitle: string) => {
-        alert(`"${cardTitle}" 카드에서 "Learn More" 버튼 클릭됨!`);
+        alert(`"${cardTitle}" 카드에서 버튼이 클릭되었습니다!`);
     };
 
     return (
         <Container sx={{ py: 4 }}>
-            <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 4 }}>
+            <Typography variant="h1" component="h1" gutterBottom sx={{ mb: 4 }}>
                 Card
             </Typography>
 
-            <Grid container spacing={4}>
-                {/* 예시 1: 기본 구조화된 props 사용 (MUI 예제 기반) */}
-                <Grid size={4}> {/* Assuming 'size' is a valid prop for your Grid setup */}
+            {/* Grid v2의 container를 사용합니다. */}
+            <DsGrid container spacing={4}>
+                {/* 중요: 'size' prop을 사용하여 반응형 크기를 객체로 전달합니다. */}
+                {/* Grid v2에서는 전체 너비가 12입니다. */}
+                <DsGrid size={{ xs: 12, sm: 4 }}>
                     <DsCard
                         overline="Word of the Day"
-                        title={
-                            <>
-                                be{Bull}nev{Bull}o{Bull}lent
-                            </>
-                        }
+                        title={cardData.outlined.title}
                         subheader="adjective"
                         content={
-                            <>
-                                well meaning and kindly.
+                            <Typography variant="body2" color="text.secondary">
+                                Set variant="outlined" to render an outlined card.
                                 <br />
                                 {'"a benevolent smile"'}
-                            </>
+                            </Typography>
                         }
                         actionText="Learn More"
-                        onActionClick={() => handleLearnMoreClick('Benevolent')}
+                        onActionClick={() => handleLearnMoreClick(cardData.outlined.alertText)}
                         sx={{ height: '100%' }}
                     />
-                </Grid>
+                </DsGrid>
 
-                {/* 예시 2: 다른 내용과 elevation variant 사용 */}
-                <Grid size={4}>
+                {/* 다른 모든 카드 아이템들도 동일하게 'size' prop을 사용합니다. */}
+                <DsGrid size={{ xs: 12, sm: 4 }}>
                     <DsCard
                         variant="elevation"
                         elevation={6}
                         overline="Featured Article"
-                        title="The Future of AI"
+                        title={cardData.elevation.title}
                         subheader="Technology Insights"
-                        content="Exploring the advancements and ethical considerations of artificial intelligence in the modern world."
+                        content={
+                            <Typography variant="body2" color="text.secondary">
+                                `elevation` 속성을 통해 카드에 그림자 효과를 주어 페이지 위에 떠 있는 듯한 입체감을 만듭니다.
+                            </Typography>
+                        }
                         actionText="Read Article"
-                        onActionClick={() => handleLearnMoreClick('Future of AI')}
+                        onActionClick={() => handleLearnMoreClick(cardData.elevation.alertText)}
                         sx={{ height: '100%' }}
                     />
-                </Grid>
+                </DsGrid>
 
-                {/* 예시 3: 최소한의 props 사용 */}
-                <Grid size={4}>
-                    <DsCard
-                        title="Simple Card"
-                        content="This is a basic card with only a title and content."
-                        sx={{ height: '100%' }}
-                    />
-                </Grid>
-
-                {/* 예시 4: children을 사용하여 커스텀 내부 컨텐츠 구성 */}
-                <Grid size={4}>
-                    <DsCard variant="outlined" sx={{ height: '100%' }}>
-                        <MuiCardMedia // Using MuiCardMedia here
+                <DsGrid size={{ xs: 12, sm: 4 }}>
+                    <DsCard variant="outlined" sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                        <MuiCardMedia
                             component="img"
                             height="140"
-                            image={Image1} // This is your imported burger image
+                            image={Image1}
                             alt="Custom image for card"
                         />
-                        <Box sx={{ p: 2 }}>
+                        <Box sx={{ p: 2, flexGrow: 1 }}>
                             <Typography gutterBottom variant="h5" component="div">
-                                Custom Lizard
+                                {cardData.custom.title}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                This card uses children for a completely custom layout,
-                                including a CardMedia and custom Typography arrangement.
-                                Lizards are a widespread group of squamate reptiles.
+                                `children`을 사용하면 카드 내부에 완전히 자유로운 레이아웃을 구성할 수 있습니다.
                             </Typography>
                         </Box>
                         <Box sx={{ p: 2, pt: 0 }}>
-                            <Button size="small" onClick={() => handleLearnMoreClick('Custom Lizard')}>
-                                Share
-                            </Button>
-                            <Button size="small" onClick={() => handleLearnMoreClick('Custom Lizard')}>
-                                Learn More
-                            </Button>
+                            <Button size="small" onClick={() => handleLearnMoreClick(cardData.custom.alertText)}>Share</Button>
+                            <Button size="small" onClick={() => handleLearnMoreClick(cardData.custom.alertText)}>Learn More</Button>
                         </Box>
                     </DsCard>
-                </Grid>
+                </DsGrid>
 
-                {/* 예시 5: Overline과 Action만 있는 카드 */}
-                <Grid size={4}>
+                <DsGrid size={{ xs: 12, sm: 4 }}>
                     <DsCard
-                        overline="Quick Tip"
-                        actionText="Got it!"
-                        onActionClick={() => handleLearnMoreClick('Quick Tip')}
-                        sx={{ height: '100%' }}
-                    >
-                        <Box sx={{ p: 2}}>
-                            <Typography variant="h6" component="div" sx={{mb: 1}}>
-                                Remember This!
-                            </Typography>
-                            <Typography variant="body2">
-                                This card demonstrates using only overline and an action.
-                                The main content area can be filled using the `content` prop or by customizing the `DsCard` to better handle mixed modes.
-                                For now, if `overline` or `actionText` is used, `children` are ignored by `DsCard`.
-                            </Typography>
-                        </Box>
-                    </DsCard>
-                </Grid>
-
-                {/* 예시 6: DsCard의 content prop을 사용하여 예시 5를 개선 */}
-                <Grid size={4}>
-                    <DsCard
-                        overline="Quick Tip (Improved)"
+                        overline={cardData.quickTip.title}
                         title="Remember This!"
                         content={
-                            <Typography variant="body2">
-                                This card demonstrates using `overline`, `title`, `content`, and an `actionText`.
-                                This is the intended way when using structured props.
+                            <Typography variant="body2" color="text.secondary">
+                                `overline`, `title`, `content`, `actionText` 등 구조화된 props를 사용하는 것이 표준적인 방법입니다.
                             </Typography>
                         }
                         actionText="Got it!"
-                        onActionClick={() => handleLearnMoreClick('Quick Tip Improved')}
+                        onActionClick={() => handleLearnMoreClick(cardData.quickTip.alertText)}
                         sx={{ height: '100%' }}
                     />
-                </Grid>
+                </DsGrid>
 
-                {/* 추가된 RecipeReviewCard 예시 */}
-                <Grid size={4}> {/* Assuming 'size' is a valid prop for your Grid setup */}
-                    <RecipeReviewCard />
-                </Grid>
-            </Grid>
+                <DsGrid size={{ xs: 12, sm: 4 }}>
+                    <RecipeReviewCard {...paellaRecipeData} />
+                </DsGrid>
+
+                <DsGrid size={{ xs: 12, sm: 4 }}>
+                    <DsCard
+                        title={cardData.basic.title}
+                        content={
+                            <Typography variant="body2" color="text.secondary">
+                                This is a basic card with only a title and content.
+                            </Typography>
+                        }
+                        sx={{ height: '100%' }}
+                    />
+                </DsGrid>
+            </DsGrid>
         </Container>
     );
 };

@@ -238,7 +238,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 
 // --- 페이지 컴포넌트 ---
 const SwitchPage = () => {
-    const theme = useTheme(); // 커스텀 스위치에서 theme.palette.mode를 사용하기 위해
+    // const theme = useTheme(); // 커스텀 스위치에서 theme.palette.mode를 사용하기 위해
 
     // DsSwitch 상태
     const [isChecked1, setIsChecked1] = useState(false);
