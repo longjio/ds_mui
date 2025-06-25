@@ -1,19 +1,19 @@
 import React from 'react';
-import { styled } from '@mui/material/styles'; // styled import 추가
+import { styled } from '@mui/material/styles';
 import {
     Box,
     Typography,
-    FormControl,        // FormControl import 추가
-    FormControlLabel,   // FormControlLabel import 추가
-    FormLabel,          // FormLabel import 추가
-    Radio,              // Radio import 추가
-    RadioGroup,         // RadioGroup import 추가
-    Switch,             // Switch import 추가
-    SpeedDialProps,     // SpeedDialProps import 추가
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Radio,
+    RadioGroup,
+    Switch,
+    SpeedDialProps,
 } from '@mui/material';
 import DsSpeedDial, { SpeedDialActionItem } from '../components/navigation/DsSpeedDial';
 
-// 아이콘 import (기존에 있었으므로 그대로 유지)
+// 아이콘 import
 import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
@@ -27,8 +27,9 @@ const actions: SpeedDialActionItem[] = [
     { icon: <ShareIcon />, name: 'Share', onClick: () => console.log('Share clicked') },
 ];
 
-// PlaygroundSpeedDial 예제를 위한 StyledSpeedDial 정의
-const StyledSpeedDial = styled(DsSpeedDial)(({ theme }) => ({ // DsSpeedDial을 styled로 감쌉니다.
+// Playground 예제를 위한 SpeedDial 스타일.
+// direction prop에 따라 위치가 동적으로 결정됩니다.
+const StyledSpeedDial = styled(DsSpeedDial)(({ theme }) => ({
     position: 'absolute',
     '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
         bottom: theme.spacing(2),
@@ -40,7 +41,9 @@ const StyledSpeedDial = styled(DsSpeedDial)(({ theme }) => ({ // DsSpeedDial을 
     },
 }));
 
-// PlaygroundSpeedDial 컴포넌트 (새로 추가)
+/**
+ * SpeedDial의 direction과 hidden 속성을 제어하는 Playground 컴포넌트
+ */
 function PlaygroundSpeedDial() {
     const [direction, setDirection] =
         React.useState<SpeedDialProps['direction']>('up');
@@ -84,7 +87,7 @@ function PlaygroundSpeedDial() {
                     ariaLabel="SpeedDial playground example"
                     hidden={hidden}
                     direction={direction}
-                    actions={actions} // DsSpeedDial에 actions prop 전달
+                    actions={actions}
                 />
             </Box>
         </Box>
@@ -111,7 +114,7 @@ const SpeedDialPage = () => {
                 컨테이너는 `position: 'relative'` 속성을 가져야 합니다.
             </Typography>
 
-            {/* SpeedDial을 담을 컨테이너 Box. 높이와 상대 위치 지정이 중요합니다. */}
+            {/* SpeedDial을 담을 컨테이너 Box */}
             <Box sx={{ height: 320, position: 'relative', border: '1px dashed grey', mt: 2 }}>
                 <DsSpeedDial
                     ariaLabel="SpeedDial basic example"
@@ -120,7 +123,7 @@ const SpeedDialPage = () => {
                 />
             </Box>
 
-            {/* --- 예제 2: Playground Speed Dial (새로 추가) --- */}
+            {/* --- 예제 2: Playground Speed Dial --- */}
             <Typography variant="h6" gutterBottom sx={{ mt: 6 }}>
                 Playground Speed Dial
             </Typography>
