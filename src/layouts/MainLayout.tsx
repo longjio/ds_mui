@@ -24,32 +24,27 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
-import { menuGroups, MenuItem } from '../app-routes'; // app-routes에서 메뉴 정보만 가져옴
+import { menuGroups, MenuItem } from '../app-routes';
 
 const drawerWidth = 240;
 
-// 탭에 저장될 데이터 타입 (children 제외)
 type OpenTabInfo = Omit<MenuItem, 'children'>;
 
 const MainLayout = () => {
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const isMobile = useMediaQuery(theme.breakpoints.down('md')); // 모바일인 경우 MDI TAB 숨기기
     const [mobileOpen, setMobileOpen] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
 
-    // MDI 탭 상태 관리
     const [openTabs, setOpenTabs] = useState<OpenTabInfo[]>([]);
     const [activeTabId, setActiveTabId] = useState<string | null>(null);
 
-    // URL 변경 감지하여 탭 상태 동기화
     useEffect(() => {
         const currentPath = location.pathname;
-        // 현재 경로가 탭 목록에 있으면 해당 탭을 활성화
         if (openTabs.some(tab => tab.path === currentPath)) {
             setActiveTabId(currentPath);
         } else if (currentPath === '/') {
-            // 홈 경로이면 활성 탭 없음
             setActiveTabId(null);
         }
     }, [location.pathname, openTabs]);
@@ -58,12 +53,11 @@ const MainLayout = () => {
         setMobileOpen(!mobileOpen);
     };
 
-    // 메뉴 아이템 클릭 핸들러
     const handleMenuClick = (menuItem: MenuItem) => {
         if (!menuItem.path) return;
 
-        // 이미 열린 탭이 아니면 새로 추가
-        if (!openTabs.some((tab: OpenTabInfo) => tab.id === menuItem.id)) {
+        // 데스크톱 환경에서만 탭 추가 로직 실행
+        if (!isMobile && !openTabs.some((tab: OpenTabInfo) => tab.id === menuItem.id)) {
             const newTab: OpenTabInfo = {
                 id: menuItem.id,
                 text: menuItem.text,
@@ -72,47 +66,39 @@ const MainLayout = () => {
             setOpenTabs(prevTabs => [...prevTabs, newTab]);
         }
 
-        // 클릭된 탭으로 이동 및 활성화
         navigate(menuItem.path);
         setActiveTabId(menuItem.path);
 
-        // 모바일에서는 메뉴를 닫음
         if (isMobile) {
             handleDrawerToggle();
         }
     };
 
-    // 탭 변경 핸들러
     const handleTabChange = (event: React.SyntheticEvent, newTabId: string) => {
         setActiveTabId(newTabId);
-        navigate(newTabId); // 탭 변경 시 URL도 변경
+        navigate(newTabId);
     };
 
-    // 탭 닫기 핸들러
     const handleCloseTab = (e: React.MouseEvent, tabIdToClose: string) => {
-        e.stopPropagation(); // 탭 클릭 이벤트 전파 방지
+        e.stopPropagation();
 
         const newTabs = openTabs.filter(tab => tab.path !== tabIdToClose);
         setOpenTabs(newTabs);
 
-        // 닫힌 탭이 활성 탭이었을 경우
         if (activeTabId === tabIdToClose) {
             if (newTabs.length > 0) {
-                // 남은 탭 중 마지막 탭을 활성화
                 const newActiveTab = newTabs[newTabs.length - 1];
                 setActiveTabId(newActiveTab.path!);
                 navigate(newActiveTab.path!);
             } else {
-                // 모든 탭이 닫혔을 경우
                 setActiveTabId(null);
-                navigate('/'); // 홈으로 이동
+                navigate('/');
             }
         }
     };
 
     const drawerContent = (
-        <>
-            <Toolbar />
+        <Box sx={{ overflow: 'auto', height: '100%' }}>
             {menuGroups.map((group) => (
                 <Accordion key={group.id} disableGutters elevation={0} defaultExpanded sx={{ borderTop: '1px solid rgba(0, 0, 0, 0.12)', '&:before': { display: 'none' }, '&:last-child': { borderBottom: '1px solid rgba(0, 0, 0, 0.12)' } }}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`${group.id}-content`} id={`${group.id}-header`}>
@@ -136,16 +122,27 @@ const MainLayout = () => {
                     </AccordionDetails>
                 </Accordion>
             ))}
-        </>
+        </Box>
     );
 
     return (
-        <Box sx={{ display: 'flex', height: '100vh', flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed" sx={{ zIndex: theme.zIndex.drawer + 1 }}>
+            <AppBar
+                position="fixed"
+                sx={{
+                    zIndex: theme.zIndex.drawer + 1,
+                }}
+            >
                 <Toolbar disableGutters sx={{ paddingLeft: '25px' }}>
                     {isMobile && (
-                        <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2 }}>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            edge="start"
+                            onClick={handleDrawerToggle}
+                            sx={{ mr: 2 }}
+                        >
                             <MenuIcon />
                         </IconButton>
                     )}
@@ -161,26 +158,37 @@ const MainLayout = () => {
                 </Toolbar>
             </AppBar>
 
-            <Box sx={{ display: 'flex', flexGrow: 1, mt: { xs: '56px', sm: '64px' } /* AppBar 높이만큼 */ }}>
-                <Drawer
-                    variant={isMobile ? 'temporary' : 'permanent'}
-                    open={isMobile ? mobileOpen : true}
-                    onClose={isMobile ? handleDrawerToggle : undefined}
-                    ModalProps={{ keepMounted: true }}
-                    sx={{
+            <Drawer
+                variant={isMobile ? 'temporary' : 'permanent'}
+                open={isMobile ? mobileOpen : true}
+                onClose={isMobile ? handleDrawerToggle : undefined}
+                sx={{
+                    width: drawerWidth,
+                    flexShrink: 0,
+                    [`& .MuiDrawer-paper`]: {
                         width: drawerWidth,
-                        flexShrink: 0,
-                        [`& .MuiDrawer-paper`]: {
-                            width: drawerWidth,
-                            boxSizing: 'border-box',
-                        },
-                    }}
-                >
-                    {drawerContent}
-                </Drawer>
+                        boxSizing: 'border-box',
+                        top: { xs: '56px', sm: '64px' },
+                        height: { xs: 'calc(100% - 56px)', sm: 'calc(100% - 64px)' },
+                    },
+                }}
+            >
+                {drawerContent}
+            </Drawer>
 
-                <Box component="main" sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
-                    {/* MDI 탭 바 */}
+            <Box
+                component="main"
+                sx={{
+                    flexGrow: 1,
+                    pt: { xs: '56px', sm: '64px' },
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                    height: '100vh',
+                    display: 'flex',
+                    flexDirection: 'column'
+                }}
+            >
+                {/* 핵심 수정 사항 1: 모바일이 아닐 때만 MDI 탭 바를 렌더링 */}
+                {!isMobile && (
                     <Box sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'background.paper' }}>
                         <Tabs
                             value={activeTabId || false}
@@ -205,17 +213,18 @@ const MainLayout = () => {
                             ))}
                         </Tabs>
                     </Box>
+                )}
 
-                    {/* MDI 탭 컨텐츠 영역 */}
-                    <Box sx={{ flexGrow: 1, overflow: 'auto', p: 3 }}>
-                        {openTabs.length > 0 ? (
-                            <Outlet />
-                        ) : (
-                            <Typography variant="h5" color="text.secondary" sx={{ textAlign: 'center', mt: 4 }}>
-                                메뉴를 클릭하여 페이지를 열어주세요.
-                            </Typography>
-                        )}
-                    </Box>
+                {/* MDI 탭 컨텐츠 영역 */}
+                <Box sx={{ flexGrow: 1, overflow: 'auto', p: 3 }}>
+                    {/* 핵심 수정 사항 2: 콘텐츠 표시 조건을 URL 경로 기준으로 변경 */}
+                    {location.pathname !== '/' ? (
+                        <Outlet />
+                    ) : (
+                        <Typography variant="h5" color="text.secondary" sx={{ textAlign: 'center', mt: 4 }}>
+                            메뉴를 클릭하여 페이지를 열어주세요.
+                        </Typography>
+                    )}
                 </Box>
             </Box>
         </Box>
