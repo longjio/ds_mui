@@ -1,6 +1,6 @@
 import React from 'react';
 // BreadcrumbsProps와 SvgIconProps를 import하여 타입을 명확히 합니다.
-import { Breadcrumbs, Link, Typography, Box, BreadcrumbsProps as MuiBreadcrumbsProps } from '@mui/material';
+import { Breadcrumbs, Link, Typography, BreadcrumbsProps as MuiBreadcrumbsProps } from '@mui/material';
 import { SvgIconProps } from '@mui/material/SvgIcon';
 import { Link as RouterLink } from 'react-router-dom';
 

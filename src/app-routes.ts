@@ -1,10 +1,11 @@
-// src/app-routes.ts
+import React, { lazy, LazyExoticComponent } from 'react';
 
-// 메뉴 타입 정의는 그대로 유지
+// 1. MenuItem 인터페이스에 'component' 속성 추가
 export interface MenuItem {
     text: string;
-    path?: string;
     id: string;
+    path?: string;
+    component?: LazyExoticComponent<React.ComponentType<any>>;
     children?: MenuItem[];
 }
 
@@ -14,15 +15,14 @@ export interface MenuGroup {
     items: MenuItem[];
 }
 
-// 메뉴 구조 정의 (이곳이 메뉴의 유일한 출처)
-// 페이지 컴포넌트 맵은 여기서 제거합니다.
+// 2. 각 메뉴 아이템에 lazy로 불러온 컴포넌트 할당
 export const menuGroups: MenuGroup[] = [
     {
         title: 'Button',
         id: 'group-button',
         items: [
-            { text: 'Button', path: '/button', id: 'item-button' },
-            { text: 'ButtonGroup', path: '/button-group', id: 'item-button-group' },
+            { text: 'Button', path: '/button', id: 'item-button', component: lazy(() => import('./pages/ButtonPage')) },
+            { text: 'ButtonGroup', path: '/button-group', id: 'item-button-group', component: lazy(() => import('./pages/ButtonGroupPage')) },
         ],
     },
     {
@@ -33,46 +33,60 @@ export const menuGroups: MenuGroup[] = [
                 text: 'Input',
                 id: 'item-input-parent',
                 children: [
-                    { text: 'Autocomplete', path: '/autocomplete', id: 'item-autocomplete' },
-                    { text: 'Textfield', path: '/textfield', id: 'item-textfield' },
-                    { text: 'Select', path: '/select', id: 'item-select'},
-                    { text: 'Checkbox', path: '/checkbox', id: 'item-checkbox' },
-                    { text: 'Radio Group', path: '/radio-group', id: 'item-radio-group' },
-                    { text: 'Rating', path: '/rating', id: 'item-rating' },
-                    { text: 'Slider', path: '/slider', id: 'item-slider' },
-                    { text: 'Switch', path: '/switch', id: 'item-switch' },
+                    { text: 'Autocomplete', path: '/autocomplete', id: 'item-autocomplete', component: lazy(() => import('./pages/AutocompletePage')) },
+                    { text: 'Textfield', path: '/textfield', id: 'item-textfield', component: lazy(() => import('./pages/TextFieldPage')) },
+                    { text: 'Select', path: '/select', id: 'item-select', component: lazy(() => import('./pages/SelectPage')) },
+                    { text: 'Checkbox', path: '/checkbox', id: 'item-checkbox', component: lazy(() => import('./pages/CheckboxPage')) },
+                    { text: 'Radio Group', path: '/radio-group', id: 'item-radio-group', component: lazy(() => import('./pages/RadioGroupPage')) },
+                    { text: 'Rating', path: '/rating', id: 'item-rating', component: lazy(() => import('./pages/RatingPage')) },
+                    { text: 'Slider', path: '/slider', id: 'item-slider', component: lazy(() => import('./pages/SliderPage')) },
+                    { text: 'Switch', path: '/switch', id: 'item-switch', component: lazy(() => import('./pages/SwitchPage')) },
                 ],
             },
+        ],
+    },
+    {
+        title: 'Navigation',
+        id: 'group-navigation',
+        items: [
+            { text: 'Bottom Navigation', path: '/bottom-nav', id: 'item-bottom-nav', component: lazy(() => import('./pages/BottomNavPage')) },
+            { text: 'Breadcrumbs', path: '/breadcrumbs', id: 'item-breadcrumbs', component: lazy(() => import('./pages/BreadcrumbsPage')) },
+            { text: 'Drawer', path: '/drawer', id: 'item-drawer', component: lazy(() => import('./pages/DrawerPage')) },
+            { text: 'Menu', path: '/menu', id: 'item-menu', component: lazy(() => import('./pages/MenuPage')) },
+            { text: 'Pagination', path: '/pagination', id: 'item-pagination', component: lazy(() => import('./pages/PaginationPage')) },
+            { text: 'Speed Dial', path: '/speed-dial', id: 'item-speed-dial', component: lazy(() => import('./pages/SpeedDialPage')) },
+            { text: 'Stepper', path: '/stepper', id: 'item-stepper', component: lazy(() => import('./pages/StepperPage')) },
+            { text: 'Tabs', path: '/tabs', id: 'item-tabs', component: lazy(() => import('./pages/TabsPage')) },
         ],
     },
     {
         title: 'Surface',
         id: 'group-surface',
         items: [
-            { text: 'Accordion', path: '/accordion', id: 'item-accordion' },
-            { text: 'Appbar', path: '/appbar', id: 'item-appbar' },
-            { text: 'Card', path: '/card', id: 'item-card' },
+            { text: 'Accordion', path: '/accordion', id: 'item-accordion', component: lazy(() => import('./pages/AccordionPage')) },
+            { text: 'Appbar', path: '/appbar', id: 'item-appbar', component: lazy(() => import('./pages/AppBarPage')) },
+            { text: 'Card', path: '/card', id: 'item-card', component: lazy(() => import('./pages/CardPage')) },
         ],
     },
     {
         title: 'Layout',
         id: 'group-layout',
         items: [
-            { text: 'Grid', path: '/grid', id: 'item-grid' },
+            { text: 'Grid', path: '/grid', id: 'item-grid', component: lazy(() => import('./pages/GridPage')) },
         ],
     },
     {
         title: 'Foundations',
         id: 'group-foundations',
         items: [
-            { text: 'Typography', path: '/typography', id: 'item-typography' },
+            { text: 'Typography', path: '/typography', id: 'item-typography', component: lazy(() => import('./pages/TypographyPage')) },
         ],
     },
     {
         title: 'MUI X',
         id: 'group-mui-x',
         items: [
-            { text: 'Data Grid', path: '/data-grid', id: 'item-data-grid' },
+            { text: 'Data Grid', path: '/data-grid', id: 'item-data-grid', component: lazy(() => import('./pages/DataGridPage')) },
         ],
     },
 ];

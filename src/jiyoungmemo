@@ -45,6 +45,13 @@ File - Project Structure - Modules 에서 프로젝트 폴더를 불러오고 �
 npm install @mui/x-date-pickers
 npm install dayjs
 
+2025.06.24
+mdi tab 기능 구현
+
+2025.06.25
+좌측 메뉴 스크롤 잘리는 문제 해결
+
+
 IntelliJ의 강력한 캐시 초기화 기능 사용:
 •IntelliJ는 단순 재시작보다 더 강력한 캐시 무효화 및 재시작 기능이 있습니다.
 이게 때로는 꼬인 인덱스나 캐시 문제를 해결해 줄 수 있어요.
