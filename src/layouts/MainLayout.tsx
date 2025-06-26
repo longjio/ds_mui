@@ -25,6 +25,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 import { menuGroups, MenuItem } from '../app-routes';
+// import { ThemeToggleButton } from '../components/common/ThemeToggleButton';
+import { ThemeModeButtonGroup } from '../components/common/ThemeModeButtonGroup';
 
 const drawerWidth = 240;
 
@@ -32,7 +34,7 @@ type OpenTabInfo = Omit<MenuItem, 'children'>;
 
 const MainLayout = () => {
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md')); // 모바일인 경우 MDI TAB 숨기기
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [mobileOpen, setMobileOpen] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
@@ -56,7 +58,6 @@ const MainLayout = () => {
     const handleMenuClick = (menuItem: MenuItem) => {
         if (!menuItem.path) return;
 
-        // 데스크톱 환경에서만 탭 추가 로직 실행
         if (!isMobile && !openTabs.some((tab: OpenTabInfo) => tab.id === menuItem.id)) {
             const newTab: OpenTabInfo = {
                 id: menuItem.id,
@@ -134,27 +135,21 @@ const MainLayout = () => {
                     zIndex: theme.zIndex.drawer + 1,
                 }}
             >
-                <Toolbar disableGutters sx={{ paddingLeft: '25px' }}>
-                    {isMobile && (
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            edge="start"
-                            onClick={handleDrawerToggle}
-                            sx={{ mr: 2 }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                    )}
+                <Toolbar disableGutters sx={{ paddingLeft: '25px', paddingRight: '16px' }}>
+                    {/* ... (기존 Toolbar 내용) */}
                     <Typography
                         variant="h6"
                         noWrap
                         component="div"
                         onClick={() => { setOpenTabs([]); setActiveTabId(null); navigate('/'); }}
-                        sx={{ color: 'inherit', textDecoration: 'none', cursor: 'pointer' }}
+                        sx={{ color: 'inherit', textDecoration: 'none', cursor: 'pointer', flexGrow: 1 }}
                     >
                         SI Design System
                     </Typography>
+
+                    {/* 2. 기존 버튼을 새로 만든 버튼 그룹으로 교체합니다. */}
+                    <ThemeModeButtonGroup />
+
                 </Toolbar>
             </AppBar>
 
@@ -187,7 +182,6 @@ const MainLayout = () => {
                     flexDirection: 'column'
                 }}
             >
-                {/* 핵심 수정 사항 1: 모바일이 아닐 때만 MDI 탭 바를 렌더링 */}
                 {!isMobile && (
                     <Box sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'background.paper' }}>
                         <Tabs
@@ -215,9 +209,7 @@ const MainLayout = () => {
                     </Box>
                 )}
 
-                {/* MDI 탭 컨텐츠 영역 */}
                 <Box sx={{ flexGrow: 1, overflow: 'auto', p: 3 }}>
-                    {/* 핵심 수정 사항 2: 콘텐츠 표시 조건을 URL 경로 기준으로 변경 */}
                     {location.pathname !== '/' ? (
                         <Outlet />
                     ) : (

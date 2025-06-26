@@ -32,7 +32,7 @@ export interface GridColDef<R = any, V = any, F = V> {
     headerName?: string;
     width?: number;
     editable?: boolean;
-    type?: GridColType | undefined; // <--- 여기를 수정했습니다!
+    type?: GridColType | undefined;
     align?: 'left' | 'right' | 'center';
     headerAlign?: 'left' | 'right' | 'center';
     description?: string;

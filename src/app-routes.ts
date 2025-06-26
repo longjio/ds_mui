@@ -69,6 +69,15 @@ export const menuGroups: MenuGroup[] = [
         ],
     },
     {
+        title: 'Feedback',
+        id: 'group-feedback',
+        items: [
+            { text: 'Alert', path: '/alert', id: 'item-alert', component: lazy(() => import('./pages/AlertPage')) },
+            { text: 'Dialog', path: '/dialog', id: 'item-dialog', component: lazy(() => import('./pages/DialogPage')) },
+            { text: 'Progress', path: '/progress', id: 'item-progress', component: lazy(() => import('./pages/ProgressPage')) },
+        ],
+    },
+    {
         title: 'Layout',
         id: 'group-layout',
         items: [

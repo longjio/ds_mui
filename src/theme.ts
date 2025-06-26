@@ -1,36 +1,10 @@
 import 'pretendard/dist/web/static/pretendard.css';
-import { createTheme } from '@mui/material/styles';
-import { grey } from '@mui/material/colors';
+import { createTheme, ThemeOptions } from '@mui/material/styles';
+import { PaletteMode } from '@mui/material';
 
-// const theme = createTheme({
-//     palette: {
-//         primary: {
-//             main: '#1A3C65',
-//         },
-export const getTheme = (mode: 'light' | 'dark') =>
-    createTheme({
-        palette: {
-            mode,
-            primary: {
-                //main: '#1A3C65',
-                main: '#323F53',
-            },
-        // secondary: { // secondary 색상도 필요하다면 여기에 정의할 수 있습니다.
-        //   main: '#dc004e',
-        // },
-        // error: {
-        //   main: '#f44336',
-        // },
-        // warning: {
-        //   main: '#ff9800',
-        // },
-        // info: {
-        //   main: '#2196f3',
-        // },
-        // success: {
-        //   main: '#4caf50',
-        // },
-    },
+// 공통으로 사용할 테마 옵션을 정의합니다.
+// 폰트, 컴포넌트 기본 스타일, 간격 등 모드에 상관없이 동일한 설정을 여기에 모아둡니다.
+const commonSettings = (mode: PaletteMode): ThemeOptions => ({
     typography: {
         fontFamily: [
             'Pretendard',
@@ -46,51 +20,118 @@ export const getTheme = (mode: 'light' | 'dark') =>
         h1: {
             fontSize: '2.25rem',
             fontWeight: 600,
-            // ... 다른 h1 스타일
         },
         button: {
-            textTransform: 'none',
+            textTransform: 'none', // 버튼 텍스트 대문자 변환 비활성화
         },
     },
     components: {
+        MuiCssBaseline: {
+            styleOverrides: (theme) => ({
+                body: {
+                    // 스크롤바 스타일링 (선택 사항)
+                    scrollbarColor: `${theme.palette.grey[400]} ${theme.palette.background.default}`,
+                    '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+                        backgroundColor: 'transparent',
+                        width: '8px',
+                    },
+                    '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
+                        borderRadius: 8,
+                        backgroundColor: theme.palette.grey[400],
+                        minHeight: 24,
+                    },
+                    '&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus': {
+                        backgroundColor: theme.palette.grey[500],
+                    },
+                    '&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active': {
+                        backgroundColor: theme.palette.grey[500],
+                    },
+                    '&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover': {
+                        backgroundColor: theme.palette.grey[500],
+                    },
+                },
+            }),
+        },
         MuiAccordion: {
             styleOverrides: {
-                root: { // Accordion의 루트 요소
-                    border: `1px solid ${mode === 'light' ? grey[300] : grey[700]}`,
+                root: ({ theme }) => ({
+                    border: `1px solid ${theme.palette.divider}`,
                     '&:not(:first-of-type)': {
                         borderTop: 'none',
                     },
-                    '&.Mui-expanded': { // 확장되었을 때
+                    '&.Mui-expanded': {
                         margin: 0,
                     },
                     boxShadow: 'none',
-
-                    // 그룹의 첫 번째 아코디언을 선택합니다.
                     '&:first-of-type': {
                         borderTopLeftRadius: 0,
                         borderTopRightRadius: 0,
                     },
-                    // 그룹의 마지막 아코디언을 선택합니다.
                     '&:last-of-type': {
                         borderBottomLeftRadius: 0,
                         borderBottomRightRadius: 0,
                     },
-
-                },
+                }),
             },
         },
         MuiAppBar: {
             styleOverrides: {
-                root: { // AppBar의 루트 요소에 대한 스타일
-                    boxShadow: 'none', // 기본 그림자를 제거합니다.
-                    // 또는 elevation={0}에 해당하는 MUI의 그림자 값을 직접 사용할 수도 있습니다.
-                    // 예: boxShadow: theme.shadows[0] (theme 객체 접근이 가능하다면)
+                root: {
+                    boxShadow: 'none',
+                },
+            },
+        },
+        MuiPaper: {
+            styleOverrides: {
+                root: {
+                    // Paper 컴포넌트의 기본 그림자를 좀 더 부드럽게 설정
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
                 },
             },
         },
     },
-    spacing: 4,
+    spacing: 4, // 기본 간격 단위 (예: theme.spacing(2) === 8px)
 });
 
-// export default theme;
+// 라이트 모드 색상 팔레트
+const lightPalette: ThemeOptions['palette'] = {
+    mode: 'light',
+    primary: {
+        main: '#323F53', // 기존에 설정하신 메인 색상 유지
+    },
+    background: {
+        default: '#ffffff', // 전체 배경색
+        paper: '#ffffff', // 카드, 다이얼로그 등
+    },
+    text: {
+        primary: '#1A2027',
+        secondary: '#3E5060',
+    },
+    divider: 'rgba(0, 0, 0, 0.12)',
+};
 
+// 다크 모드 색상 팔레트
+const darkPalette: ThemeOptions['palette'] = {
+    mode: 'dark',
+    primary: {
+        main: '#A8B0BC', // 라이트 모드의 메인 색상과 어울리는 밝은 톤
+    },
+    background: {
+        default: '#121212', // 아주 어두운 배경
+        paper: '#1e1e1e', // 카드 등은 배경보다 약간 밝게
+    },
+    text: {
+        primary: '#E0E3E7',
+        secondary: '#B0B8C4',
+    },
+    divider: 'rgba(255, 255, 255, 0.12)',
+};
+
+// 최종 테마를 생성하는 함수
+export const getTheme = (mode: PaletteMode) => {
+    const palette = mode === 'light' ? lightPalette : darkPalette;
+    return createTheme({
+        ...commonSettings(mode),
+        palette,
+    });
+};
