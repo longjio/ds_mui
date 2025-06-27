@@ -1,60 +1,74 @@
 import React from 'react';
-import {
-    Box,
-    CircularProgress,
-    LinearProgress,
-    Typography,
-    CircularProgressProps,
-    LinearProgressProps,
-} from '@mui/material';
+import { CircularProgress, LinearProgress, Box, Typography, LinearProgressProps, CircularProgressProps } from '@mui/material';
 
-// Circular와 Linear의 공통 Props와 우리만의 커스텀 Props를 결합합니다.
-interface DsProgressProps extends Omit<CircularProgressProps & LinearProgressProps, 'variant'> {
-    /**
-     * 프로그레스의 모양을 결정합니다.
-     * @default 'circular'
-     */
-    variant?: 'circular' | 'linear';
-    /**
-     * `true`일 경우, determinate 프로그레스 옆에 퍼센트 라벨을 표시합니다.
-     * @default false
-     */
+// 'buffer' variant를 지원하기 위해 커스텀 variant 타입을 정의합니다.
+type DsProgressVariant = 'circular' | 'linear' | 'buffer';
+
+// DsProgress가 LinearProgress와 CircularProgress의 prop을 모두 받을 수 있도록 타입을 확장합니다.
+// 'variant'와 'classes'는 타입 충돌을 피하기 위해 Omit으로 제외합니다.
+interface DsProgressProps extends Omit<LinearProgressProps, 'variant' | 'classes'>, Omit<CircularProgressProps, 'variant' | 'classes'> {
+    variant?: DsProgressVariant;
+    value?: number;
+    valueBuffer?: number; // 'buffer' variant를 위해 추가된 prop
     withLabel?: boolean;
+    color?: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | 'inherit';
+    size?: number;
+    thickness?: number;
 }
 
-/**
- * 작업의 진행 상태를 시각적으로 나타내는 재사용 가능한 컴포넌트입니다.
- * 원형(circular) 및 선형(linear) 스타일과 라벨 표시 여부를 선택할 수 있습니다.
- */
 const DsProgress: React.FC<DsProgressProps> = ({
                                                    variant = 'circular',
-                                                   withLabel = false,
-                                                   value = 0, // withLabel 사용 시 value가 필요하므로 기본값 설정
-                                                   ...props
+                                                   value,
+                                                   valueBuffer,
+                                                   withLabel,
+                                                   color,
+                                                   size,
+                                                   thickness,
+                                                   ...rest
                                                }) => {
-    if (variant === 'linear') {
-        if (withLabel) {
-            return (
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Box sx={{ width: '100%', mr: 1 }}>
-                        <LinearProgress variant="determinate" value={value} {...props} />
-                    </Box>
-                    <Box sx={{ minWidth: 35 }}>
-                        <Typography variant="body2" color="text.secondary">{`${Math.round(
-                            value,
-                        )}%`}</Typography>
-                    </Box>
-                </Box>
-            );
+    const commonProps = {
+        color,
+        ...rest,
+    };
+
+    if (variant === 'linear' || variant === 'buffer') {
+        let linearVariant: LinearProgressProps['variant'];
+        if (variant === 'buffer') {
+            linearVariant = 'buffer';
+        } else {
+            linearVariant = value !== undefined ? 'determinate' : 'indeterminate';
         }
-        return <LinearProgress value={value} {...props} />;
+
+        return (
+            <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                <LinearProgress
+                    variant={linearVariant}
+                    value={value}
+                    valueBuffer={valueBuffer}
+                    sx={{ flexGrow: 1 }} // LinearProgress가 Box 내에서 전체 너비를 차지하도록 설정
+                    {...commonProps}
+                />
+                {withLabel && value !== undefined && (
+                    <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
+                        {`${Math.round(value)}%`}
+                    </Typography>
+                )}
+            </Box>
+        );
     }
 
-    // Circular (default)
-    if (withLabel) {
-        return (
-            <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-                <CircularProgress variant="determinate" value={value} {...props} />
+    const circularVariant: CircularProgressProps['variant'] = value !== undefined ? 'determinate' : 'indeterminate';
+
+    return (
+        <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+            <CircularProgress
+                variant={circularVariant}
+                value={value}
+                size={size}
+                thickness={thickness}
+                {...commonProps}
+            />
+            {withLabel && value !== undefined && (
                 <Box
                     sx={{
                         top: 0,
@@ -67,16 +81,13 @@ const DsProgress: React.FC<DsProgressProps> = ({
                         justifyContent: 'center',
                     }}
                 >
-                    <Typography
-                        variant="caption"
-                        component="div"
-                        color="text.secondary"
-                    >{`${Math.round(value)}%`}</Typography>
+                    <Typography variant="caption" component="div" color="text.secondary">
+                        {`${Math.round(value)}%`}
+                    </Typography>
                 </Box>
-            </Box>
-        );
-    }
-    return <CircularProgress value={value} {...props} />;
+            )}
+        </Box>
+    );
 };
 
 export default DsProgress;

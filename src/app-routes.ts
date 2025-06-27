@@ -25,14 +25,30 @@ export const menuGroups: MenuGroup[] = [
             { text: 'ButtonGroup', path: '/button-group', id: 'item-button-group', component: lazy(() => import('./pages/ButtonGroupPage')) },
         ],
     },
+    // {
+    //     title: 'Components',
+    //     id: 'group-components',
+    //     items: [
+    //         {
+    //             text: 'Input',
+    //             id: 'item-input-parent',
+    //             children: [
+    //                 { text: 'Autocomplete', path: '/autocomplete', id: 'item-autocomplete', component: lazy(() => import('./pages/AutocompletePage')) },
+    //                 { text: 'Textfield', path: '/textfield', id: 'item-textfield', component: lazy(() => import('./pages/TextFieldPage')) },
+    //                 { text: 'Select', path: '/select', id: 'item-select', component: lazy(() => import('./pages/SelectPage')) },
+    //                 { text: 'Checkbox', path: '/checkbox', id: 'item-checkbox', component: lazy(() => import('./pages/CheckboxPage')) },
+    //                 { text: 'Radio Group', path: '/radio-group', id: 'item-radio-group', component: lazy(() => import('./pages/RadioGroupPage')) },
+    //                 { text: 'Rating', path: '/rating', id: 'item-rating', component: lazy(() => import('./pages/RatingPage')) },
+    //                 { text: 'Slider', path: '/slider', id: 'item-slider', component: lazy(() => import('./pages/SliderPage')) },
+    //                 { text: 'Switch', path: '/switch', id: 'item-switch', component: lazy(() => import('./pages/SwitchPage')) },
+    //             ],
+    //         },
+    //     ],
+    // },
     {
-        title: 'Components',
-        id: 'group-components',
+        title: 'Input',
+        id: 'item-input-parent',
         items: [
-            {
-                text: 'Input',
-                id: 'item-input-parent',
-                children: [
                     { text: 'Autocomplete', path: '/autocomplete', id: 'item-autocomplete', component: lazy(() => import('./pages/AutocompletePage')) },
                     { text: 'Textfield', path: '/textfield', id: 'item-textfield', component: lazy(() => import('./pages/TextFieldPage')) },
                     { text: 'Select', path: '/select', id: 'item-select', component: lazy(() => import('./pages/SelectPage')) },
@@ -41,8 +57,7 @@ export const menuGroups: MenuGroup[] = [
                     { text: 'Rating', path: '/rating', id: 'item-rating', component: lazy(() => import('./pages/RatingPage')) },
                     { text: 'Slider', path: '/slider', id: 'item-slider', component: lazy(() => import('./pages/SliderPage')) },
                     { text: 'Switch', path: '/switch', id: 'item-switch', component: lazy(() => import('./pages/SwitchPage')) },
-                ],
-            },
+
         ],
     },
     {
@@ -82,6 +97,7 @@ export const menuGroups: MenuGroup[] = [
         id: 'group-layout',
         items: [
             { text: 'Grid', path: '/grid', id: 'item-grid', component: lazy(() => import('./pages/GridPage')) },
+            { text: 'Image List', path: '/image-list', id: '/item-image-list', component: lazy(() => import('./pages/ImageListPage')) }
         ],
     },
     {
@@ -96,6 +112,7 @@ export const menuGroups: MenuGroup[] = [
         id: 'group-mui-x',
         items: [
             { text: 'Data Grid', path: '/data-grid', id: 'item-data-grid', component: lazy(() => import('./pages/DataGridPage')) },
+            { text: 'Date Picker', path: '/date-picker', id: 'item-date-picker', component: lazy(() => import('./pages/DatePickerPage')) },
         ],
     },
 ];

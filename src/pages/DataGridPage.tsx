@@ -75,7 +75,7 @@ const rows: RowData[] = [
 const DataGridPage = () => {
     return (
         <Stack spacing={4} sx={{ p: 3 }}>
-            <Typography variant="h4" component="h1" gutterBottom>DataGrid 컴포넌트
+            <Typography variant="h1" component="h1" gutterBottom>DataGrid
             </Typography>
 
             <Box>
