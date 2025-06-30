@@ -2,8 +2,26 @@ import 'pretendard/dist/web/static/pretendard.css';
 import { createTheme, ThemeOptions } from '@mui/material/styles';
 import { PaletteMode } from '@mui/material';
 
+// TypeScript에게 새로운 팔레트 속성을 알려주기 위한 모듈 확장
+declare module '@mui/material/styles' {
+    // Palette와 PaletteOptions에 새로운 속성을 추가합니다.
+    interface Palette {
+        charts: {
+            main: string;
+            secondary: string;
+            axis: string;
+        };
+    }
+    interface PaletteOptions {
+        charts?: {
+            main?: string;
+            secondary?: string;
+            axis?: string;
+        };
+    }
+}
+
 // 공통으로 사용할 테마 옵션을 정의합니다.
-// 폰트, 컴포넌트 기본 스타일, 간격 등 모드에 상관없이 동일한 설정을 여기에 모아둡니다.
 const commonSettings = (mode: PaletteMode): ThemeOptions => ({
     typography: {
         fontFamily: [
@@ -29,25 +47,25 @@ const commonSettings = (mode: PaletteMode): ThemeOptions => ({
         MuiCssBaseline: {
             styleOverrides: (theme) => ({
                 body: {
-                    // 스크롤바 스타일링 (선택 사항)
-                    scrollbarColor: `${theme.palette.grey[400]} ${theme.palette.background.default}`,
+                    // 테마 모드에 따라 스크롤바 색상을 동적으로 설정합니다.
+                    scrollbarColor: `${theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[400]} ${theme.palette.background.default}`,
                     '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
                         backgroundColor: 'transparent',
                         width: '8px',
                     },
                     '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
                         borderRadius: 8,
-                        backgroundColor: theme.palette.grey[400],
+                        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[400],
                         minHeight: 24,
                     },
                     '&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus': {
-                        backgroundColor: theme.palette.grey[500],
+                        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[500],
                     },
                     '&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active': {
-                        backgroundColor: theme.palette.grey[500],
+                        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[500],
                     },
                     '&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover': {
-                        backgroundColor: theme.palette.grey[500],
+                        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[500],
                     },
                 },
             }),
@@ -97,34 +115,44 @@ const commonSettings = (mode: PaletteMode): ThemeOptions => ({
 const lightPalette: ThemeOptions['palette'] = {
     mode: 'light',
     primary: {
-        main: '#323F53', // 기존에 설정하신 메인 색상 유지
+        main: '#323F53',
     },
     background: {
-        default: '#ffffff', // 전체 배경색
-        paper: '#ffffff', // 카드, 다이얼로그 등
+        default: '#f4f6f8',
+        paper: '#ffffff',
     },
     text: {
         primary: '#1A2027',
         secondary: '#3E5060',
     },
     divider: 'rgba(0, 0, 0, 0.12)',
+    charts: {
+        main: '#323F53',
+        secondary: '#82aaff',
+        axis: '#637381',
+    },
 };
 
 // 다크 모드 색상 팔레트
 const darkPalette: ThemeOptions['palette'] = {
     mode: 'dark',
     primary: {
-        main: '#A8B0BC', // 라이트 모드의 메인 색상과 어울리는 밝은 톤
+        main: '#A8B0BC',
     },
     background: {
-        default: '#121212', // 아주 어두운 배경
-        paper: '#1e1e1e', // 카드 등은 배경보다 약간 밝게
+        default: '#121212',
+        paper: '#1e1e1e',
     },
     text: {
         primary: '#E0E3E7',
         secondary: '#B0B8C4',
     },
     divider: 'rgba(255, 255, 255, 0.12)',
+    charts: {
+        main: '#A8B0BC',
+        secondary: '#5c85d6',
+        axis: '#919EAB',
+    },
 };
 
 // 최종 테마를 생성하는 함수

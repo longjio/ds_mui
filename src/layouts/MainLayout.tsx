@@ -28,6 +28,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 import { menuGroups, MenuItem } from '../app-routes';
 import { ThemeModeButtonGroup } from '../components/common/ThemeModeButtonGroup';
+import Dashboard from '../pages/Dashboard';
 
 const drawerWidth = 240;
 
@@ -110,9 +111,7 @@ const MainLayout = () => {
             contextMenu === null
                 ? {
                     mouseX: event.clientX - 2,
-                    // mouseY 값을 조정하여 메뉴 위치를 아래로 내립니다.
-                    // 기존: event.clientY - 6
-                    mouseY: event.clientY + 24,
+                    mouseY: event.clientY + 14,
                 }
                 : null,
         );
@@ -209,7 +208,7 @@ const MainLayout = () => {
                     flexDirection: 'column'
                 }}
             >
-                {!isMobile && (
+                {!isMobile && location.pathname !== '/' && (
                     <Box sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'background.paper' }}>
                         <Tabs
                             value={activeTabId || false}
@@ -237,13 +236,19 @@ const MainLayout = () => {
                     </Box>
                 )}
 
-                <Box sx={{ flexGrow: 1, overflow: 'auto', p: 3 }}>
+                {/* 이 부분의 sx prop을 수정합니다. */}
+                <Box sx={{
+                    flexGrow: 1,
+                    overflow: 'auto',
+                    // 현재 경로가 '/' (대시보드)일 때는 패딩을 0으로, 그 외에는 3으로 설정합니다.
+                    p: location.pathname === '/' ? 0 : 3,
+                    // 대시보드가 아닐 때만 기본 배경색을 적용합니다. 대시보드는 자체 배경색을 가집니다.
+                    bgcolor: location.pathname === '/' ? 'transparent' : 'background.paper',
+                }}>
                     {location.pathname !== '/' ? (
                         <Outlet />
                     ) : (
-                        <Typography variant="h5" color="text.secondary" sx={{ textAlign: 'center', mt: 4 }}>
-                            메뉴를 클릭하여 페이지를 열어주세요.
-                        </Typography>
+                        <Dashboard />
                     )}
                 </Box>
             </Box>

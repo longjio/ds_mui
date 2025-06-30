@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// [수정 1] DatePickerToolbarProps 타입을 import 합니다.
 import { StaticDatePicker, PickersDay, PickersDayProps, DatePickerToolbarProps } from '@mui/x-date-pickers';
 import { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
@@ -36,7 +35,7 @@ interface DsDateRangePickerProps {
 
 /**
  * 달력 상단의 헤더를 커스텀 렌더링하는 컴포넌트
- * [수정 2] Props 타입을 DatePickerToolbarProps와 커스텀 value prop을 모두 포함하도록 변경합니다.
+ * DatePickerToolbarProps와 커스텀 value prop을 모두 받도록 타입을 정의합니다.
  */
 function CustomPickerHeader(props: DatePickerToolbarProps & { value: Dayjs | null }) {
     const { value } = props;
@@ -54,7 +53,7 @@ function CustomPickerHeader(props: DatePickerToolbarProps & { value: Dayjs | nul
  * @returns 커스텀 PickersDay 컴포넌트
  */
 function createRangePickersDay(selectedStart: Dayjs | null, selectedEnd: Dayjs | null) {
-    // [수정 3] Props 타입과 반환 타입을 수정합니다.
+    // ✅ [수정] PickersDayProps에서 제네릭 <Dayjs>를 제거합니다.
     return function RangePickersDay(props: PickersDayProps): React.ReactElement {
         const { day, outsideCurrentMonth, ...other } = props;
 
@@ -69,11 +68,12 @@ function createRangePickersDay(selectedStart: Dayjs | null, selectedEnd: Dayjs |
         const isSelected = isStart || isEnd;
 
         const wrapperStyle: SxProps<Theme> = {
-            backgroundColor: isBetween ? '#f6f6f6' : 'transparent',
-            borderTopLeftRadius: isStart ? '50%' : 0,
-            borderBottomLeftRadius: isStart ? '50%' : 0,
-            borderTopRightRadius: isEnd ? '50%' : 0,
-            borderBottomRightRadius: isEnd ? '50%' : 0,
+            // isBetween일 때만 배경색을 적용하여 범위 느낌을 줍니다.
+            backgroundColor: isBetween ? theme => theme.palette.action.hover : 'transparent',
+            borderTopLeftRadius: isStart || isBetween ? '50%' : 0,
+            borderBottomLeftRadius: isStart || isBetween ? '50%' : 0,
+            borderTopRightRadius: isEnd || isBetween ? '50%' : 0,
+            borderBottomRightRadius: isEnd || isBetween ? '50%' : 0,
             width: 40,
             height: 36,
             display: 'flex',
@@ -83,14 +83,14 @@ function createRangePickersDay(selectedStart: Dayjs | null, selectedEnd: Dayjs |
 
         const dayStyle: SxProps<Theme> = {
             ...(isSelected && {
-                backgroundColor: '#2e3a50',
-                color: '#fff',
+                backgroundColor: 'primary.main',
+                color: 'primary.contrastText',
+                '&:hover': {
+                    backgroundColor: 'primary.dark',
+                },
                 borderRadius: '50%',
                 width: 36,
                 height: 36,
-            }),
-            ...(isBetween && {
-                color: '#000',
             }),
         };
 
@@ -146,22 +146,18 @@ const DsDateRangePicker: React.FC<DsDateRangePickerProps> = ({
     };
 
     const handleDateChange = (newValue: Dayjs | null) => {
-        // 시작일과 종료일이 모두 선택된 상태에서 다시 선택하는 경우, 새로 시작
         if (tempStartDate && tempEndDate) {
             setTempStartDate(newValue);
             setTempEndDate(null);
             return;
         }
 
-        // 시작일이 없는 경우, 시작일로 설정
         if (!tempStartDate) {
             setTempStartDate(newValue);
             return;
         }
 
-        // 시작일만 있는 경우, 종료일로 설정
         if (tempStartDate && !tempEndDate) {
-            // 만약 새로 선택한 날짜가 시작일보다 이전이면, 두 날짜를 교체
             if (newValue && newValue.isBefore(tempStartDate, 'day')) {
                 setTempEndDate(tempStartDate);
                 setTempStartDate(newValue);
@@ -185,10 +181,9 @@ const DsDateRangePicker: React.FC<DsDateRangePickerProps> = ({
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-            {/* 요일 셀(월,화,수...)의 정렬을 날짜 셀과 맞추기 위한 글로벌 스타일 */}
             <GlobalStyles styles={{
                 '.MuiDayCalendar-weekDayLabel': {
-                    width: 40, // PickersDay의 wrapper Box 너비와 맞춤
+                    width: 40,
                     height: 36,
                     margin: '0 auto',
                     display: 'flex',
@@ -240,13 +235,9 @@ const DsDateRangePicker: React.FC<DsDateRangePickerProps> = ({
                                 onChange={handleDateChange}
                                 onMonthChange={(newMonth) => setLeftCalendarMonth(newMonth)}
                                 slots={{
-                                    actionBar: () => null, // 액션바 제거
-                                    toolbar: CustomPickerHeader,
+                                    actionBar: () => null,
+                                    toolbar: (props) => <CustomPickerHeader {...props} value={leftCalendarMonth} />,
                                     day: RangeDay,
-                                }}
-                                slotProps={{
-                                    // [수정 4] 'as any' 타입 단언을 제거합니다.
-                                    toolbar: { value: leftCalendarMonth },
                                 }}
                                 referenceDate={leftCalendarMonth}
                             />
@@ -255,16 +246,11 @@ const DsDateRangePicker: React.FC<DsDateRangePickerProps> = ({
                             <StaticDatePicker
                                 value={tempEndDate}
                                 onChange={handleDateChange}
-                                // 오른쪽 달력은 왼쪽 달력보다 1달 뒤를 보여줌
                                 referenceDate={leftCalendarMonth.add(1, 'month')}
                                 slots={{
-                                    actionBar: () => null, // 액션바 제거
-                                    toolbar: CustomPickerHeader,
+                                    actionBar: () => null,
+                                    toolbar: (props) => <CustomPickerHeader {...props} value={leftCalendarMonth.add(1, 'month')} />,
                                     day: RangeDay,
-                                }}
-                                slotProps={{
-                                    // [수정 5] 'as any' 타입 단언을 제거합니다.
-                                    toolbar: { value: leftCalendarMonth.add(1, 'month') },
                                 }}
                             />
                         </Box>
