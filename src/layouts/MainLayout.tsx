@@ -20,12 +20,13 @@ import {
     AccordionDetails,
     Tabs,
     Tab,
+    Menu,
+    MenuItem as MuiMenuItem,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 import { menuGroups, MenuItem } from '../app-routes';
-// import { ThemeToggleButton } from '../components/common/ThemeToggleButton';
 import { ThemeModeButtonGroup } from '../components/common/ThemeModeButtonGroup';
 
 const drawerWidth = 240;
@@ -41,6 +42,11 @@ const MainLayout = () => {
 
     const [openTabs, setOpenTabs] = useState<OpenTabInfo[]>([]);
     const [activeTabId, setActiveTabId] = useState<string | null>(null);
+
+    const [contextMenu, setContextMenu] = useState<{
+        mouseX: number;
+        mouseY: number;
+    } | null>(null);
 
     useEffect(() => {
         const currentPath = location.pathname;
@@ -98,6 +104,31 @@ const MainLayout = () => {
         }
     };
 
+    const handleContextMenu = (event: React.MouseEvent) => {
+        event.preventDefault();
+        setContextMenu(
+            contextMenu === null
+                ? {
+                    mouseX: event.clientX - 2,
+                    // mouseY 값을 조정하여 메뉴 위치를 아래로 내립니다.
+                    // 기존: event.clientY - 6
+                    mouseY: event.clientY + 24,
+                }
+                : null,
+        );
+    };
+
+    const handleCloseContextMenu = () => {
+        setContextMenu(null);
+    };
+
+    const handleCloseAllTabs = () => {
+        setOpenTabs([]);
+        setActiveTabId(null);
+        navigate('/');
+        handleCloseContextMenu();
+    };
+
     const drawerContent = (
         <Box sx={{ overflow: 'auto', height: '100%' }}>
             {menuGroups.map((group) => (
@@ -136,7 +167,6 @@ const MainLayout = () => {
                 }}
             >
                 <Toolbar disableGutters sx={{ paddingLeft: '25px', paddingRight: '16px' }}>
-                    {/* ... (기존 Toolbar 내용) */}
                     <Typography
                         variant="h6"
                         noWrap
@@ -146,10 +176,7 @@ const MainLayout = () => {
                     >
                         SI Design System
                     </Typography>
-
-                    {/* 2. 기존 버튼을 새로 만든 버튼 그룹으로 교체합니다. */}
                     <ThemeModeButtonGroup />
-
                 </Toolbar>
             </AppBar>
 
@@ -195,6 +222,7 @@ const MainLayout = () => {
                                 <Tab
                                     key={tab.id}
                                     value={tab.path}
+                                    onContextMenu={handleContextMenu}
                                     label={
                                         <Box component="span" sx={{ display: 'flex', alignItems: 'center' }}>
                                             {tab.text}
@@ -219,6 +247,19 @@ const MainLayout = () => {
                     )}
                 </Box>
             </Box>
+
+            <Menu
+                open={contextMenu !== null}
+                onClose={handleCloseContextMenu}
+                anchorReference="anchorPosition"
+                anchorPosition={
+                    contextMenu !== null
+                        ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+                        : undefined
+                }
+            >
+                <MuiMenuItem onClick={handleCloseAllTabs}>전체 탭 닫기</MuiMenuItem>
+            </Menu>
         </Box>
     );
 };
