@@ -107,6 +107,17 @@ const commonSettings = (mode: PaletteMode): ThemeOptions => ({
                 },
             },
         },
+        // ✅ [추가] DataGrid의 전역 스타일을 설정합니다.
+        MuiDataGrid: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    // DataGrid의 기본 배경색을 테마의 paper 색상으로 지정합니다.
+                    '--DataGrid-t-color-background-base': theme.palette.background.paper,
+                    // 테두리 색상도 테마와 일관성을 맞춥니다.
+                    border: `1px solid ${theme.palette.divider}`,
+                }),
+            },
+        },
     },
     spacing: 4, // 기본 간격 단위 (예: theme.spacing(2) === 8px)
 });

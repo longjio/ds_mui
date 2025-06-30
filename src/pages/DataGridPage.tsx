@@ -85,6 +85,7 @@ const DataGridPage = () => {
                 <DsDataGrid
                     rows={rows}
                     columns={columns}
+                    // ✅ sx prop 제거
                 />
             </Box>
 
@@ -105,6 +106,7 @@ const DataGridPage = () => {
                     }}
                     autoHeight
                     checkboxSelection={false}
+                    // ✅ sx prop 제거
                 />
             </Box>
         </Stack>

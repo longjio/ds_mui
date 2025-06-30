@@ -53,6 +53,10 @@ export function DsDataGrid({
                 checkboxSelection={defaultCheckboxSelection}
                 disableRowSelectionOnClick={defaultDisableRowSelectionOnClick}
                 {...restProps} // sx from restProps will be passed to DataGrid if not destructured earlier
+                sx={{
+                    // DataGrid 컴포넌트 자체의 배경색을 흰색으로 강제합니다.
+                    bgcolor: '#ffffff',
+                }}
             />
         </Box>
     );
