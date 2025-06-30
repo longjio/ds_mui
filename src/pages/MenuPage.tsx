@@ -160,7 +160,7 @@ const MenuPage = () => {
 
     return (
         <Box sx={{ p: 3 }}>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h1" gutterBottom>
                 Menu
             </Typography>
             <Typography color="text.secondary" sx={{ mb: 4 }}>

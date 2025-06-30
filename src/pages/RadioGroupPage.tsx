@@ -68,7 +68,7 @@ const RadioGroupPage = () => {
             {/* --- 기존 DsRadioGroup 예시들 --- */}
             <Stack spacing={2} sx={{ p: 3, border: '1px solid #e0e0e0' }}>
                 <Typography variant="h6" component="h2" gutterBottom>
-                    RadioGroup 세로 정렬
+                    RadioGroup Vertical
                 </Typography>
                 <DsRadioGroup
                     id="gender-group"
@@ -85,7 +85,7 @@ const RadioGroupPage = () => {
 
             <Stack spacing={2} sx={{ p: 3, border: '1px solid #e0e0e0' }}>
                 <Typography variant="h6" component="h2" gutterBottom>
-                    RadioGroup 가로 정렬
+                    RadioGroup Horizontal
                 </Typography>
                 <DsRadioGroup
                     id="options-group-row"

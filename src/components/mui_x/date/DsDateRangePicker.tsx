@@ -14,11 +14,11 @@ import {
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { StaticDatePicker, PickersDay, PickersDayProps } from '@mui/x-date-pickers';
+// [수정 1] DatePickerToolbarProps 타입을 import 합니다.
+import { StaticDatePicker, PickersDay, PickersDayProps, DatePickerToolbarProps } from '@mui/x-date-pickers';
 import { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-// [수정 1] 아이콘 import 경로를 안정적인 @mui/icons-material 로 변경
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 // dayjs의 로케일을 한국어로 설정합니다.
@@ -36,8 +36,9 @@ interface DsDateRangePickerProps {
 
 /**
  * 달력 상단의 헤더를 커스텀 렌더링하는 컴포넌트
+ * [수정 2] Props 타입을 DatePickerToolbarProps와 커스텀 value prop을 모두 포함하도록 변경합니다.
  */
-function CustomPickerHeader(props: { value: Dayjs | null }) {
+function CustomPickerHeader(props: DatePickerToolbarProps & { value: Dayjs | null }) {
     const { value } = props;
     return (
         <Typography variant="h6" sx={{ textAlign: 'center', width: '100%', py: 1 }}>
@@ -53,7 +54,8 @@ function CustomPickerHeader(props: { value: Dayjs | null }) {
  * @returns 커스텀 PickersDay 컴포넌트
  */
 function createRangePickersDay(selectedStart: Dayjs | null, selectedEnd: Dayjs | null) {
-    return function RangePickersDay(props: PickersDayProps<Dayjs>): JSX.Element {
+    // [수정 3] Props 타입과 반환 타입을 수정합니다.
+    return function RangePickersDay(props: PickersDayProps): React.ReactElement {
         const { day, outsideCurrentMonth, ...other } = props;
 
         const isStart = selectedStart && day.isSame(selectedStart, 'day');
@@ -104,13 +106,6 @@ function createRangePickersDay(selectedStart: Dayjs | null, selectedEnd: Dayjs |
         );
     };
 }
-
-
-
-
-
-
-
 
 /**
  * 두 개의 달력을 사용하여 날짜 범위를 선택하는 커스텀 Date Range Picker 컴포넌트
@@ -217,7 +212,6 @@ const DsDateRangePicker: React.FC<DsDateRangePickerProps> = ({
                                 onClick={handleClick as React.MouseEventHandler<HTMLButtonElement>}
                                 edge="end"
                             >
-                                {/* [수정 2] 아이콘 컴포넌트 이름 변경 */}
                                 <CalendarMonthIcon />
                             </IconButton>
                         </InputAdornment>
@@ -251,7 +245,8 @@ const DsDateRangePicker: React.FC<DsDateRangePickerProps> = ({
                                     day: RangeDay,
                                 }}
                                 slotProps={{
-                                    toolbar: { value: leftCalendarMonth } as any,
+                                    // [수정 4] 'as any' 타입 단언을 제거합니다.
+                                    toolbar: { value: leftCalendarMonth },
                                 }}
                                 referenceDate={leftCalendarMonth}
                             />
@@ -268,7 +263,8 @@ const DsDateRangePicker: React.FC<DsDateRangePickerProps> = ({
                                     day: RangeDay,
                                 }}
                                 slotProps={{
-                                    toolbar: { value: leftCalendarMonth.add(1, 'month') } as any,
+                                    // [수정 5] 'as any' 타입 단언을 제거합니다.
+                                    toolbar: { value: leftCalendarMonth.add(1, 'month') },
                                 }}
                             />
                         </Box>

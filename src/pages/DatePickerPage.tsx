@@ -26,7 +26,7 @@ export default function DsDatePickerPage() {
         // 전체 컴포넌트를 LocalizationProvider로 감싸줍니다.
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Box sx={{ p: 3 }}>
-                <Typography variant="h4" gutterBottom>
+                <Typography variant="h1" gutterBottom>
                     Date Picker
                 </Typography>
                 <Typography color="text.secondary" sx={{ mb: 4 }}>
@@ -81,12 +81,15 @@ export default function DsDatePickerPage() {
                         <Typography variant="h6" gutterBottom>
                             Date Range Picker (팝업 캘린더)
                         </Typography>
-                        <DsDateRangePicker
-                            label="기간 선택"
-                            onChange={handleRangeChange}
-                            initialStartDate={selectedRangeStartDate}
-                            initialEndDate={selectedRangeEndDate}
-                        />
+                        {/* DsDateRangePicker를 감싸는 Box에 너비 스타일을 적용합니다. */}
+                        <Box sx={{ width: '400px' }}>
+                            <DsDateRangePicker
+                                label="기간 선택"
+                                onChange={handleRangeChange}
+                                initialStartDate={selectedRangeStartDate}
+                                initialEndDate={selectedRangeEndDate}
+                            />
+                        </Box>
                         <Typography variant="body2" sx={{ mt: 1 }}>
                             선택된 기간: {selectedRangeStartDate ? selectedRangeStartDate.format('YYYY.MM.DD') : '없음'} ~ {selectedRangeEndDate ? selectedRangeEndDate.format('YYYY.MM.DD') : '없음'}
                         </Typography>

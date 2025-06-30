@@ -3,13 +3,14 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import DsGrid, { DsGridItemStyled } from '../components/layout/DsGrid'; // DsGrid와 가져오기
+import DsGrid, { DsGridItemStyled } from '../components/layout/DsGrid';
 
 const DsGridPage = () => {
     return (
-        <Container sx={{ py: 4 }}>
-            <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 4 }}>
-                DsGrid 컴포넌트 데모 페이지
+        // Container의 maxWidth 제한을 비활성화하여 전체 너비를 사용하도록 설정
+        <Container maxWidth={false}>
+            <Typography variant="h1" component="h1" gutterBottom>
+                Grid
             </Typography>
 
             <Box sx={{ flexGrow: 1 }}>

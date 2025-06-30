@@ -9,7 +9,7 @@ const AlertPage = () => {
     return (
         <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 4 }}>
             <Box>
-                <Typography variant="h4" gutterBottom>
+                <Typography variant="h1" gutterBottom>
                     Alert
                 </Typography>
                 <Typography color="text.secondary">
